@@ -1,0 +1,32 @@
+from django.db import models
+
+class User(models.Model):
+    userID = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+    fullname = models.CharField(max_length=255)
+    email  = models.CharField(max_length=255)
+    birtdate = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    last_join = models.CharField(max_length=255)
+    about = models.CharField(max_length=255)
+    me_flow = models.CharField(max_length=255) #bizim takip ettiklerimiz
+    flow = models.CharField(max_length=255) #bizi takip edenler
+    
+
+
+class Post(models.Model):
+    postID = models.CharField(max_length=255)
+    link = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    content = models.CharField(max_length=500)
+    author = models.CharField(max_length=255)
+    publish_date = models.CharField(max_length=255)
+    like_count = models.CharField(max_length=255)
+
+
+class ForgotPassword(models.Model):
+    passwordID = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>forumSözluk</title>
+</head>
+<body style="background-color:#f8f9fa!important;">
+    {% if is_login == "false" %}
+        {% include 'headers/guest-header.html' %}
+    {% elif is_login == "true" %}
+        {% include 'headers/user-header.html' %}
+    {% endif %} 
+    <main role="main" class="container">
+        <div class="my-3 p-3  rounded shadow-sm" style="background-color:#f8f9fa!important;">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Trendler</h6>
+        {% for trend in trends %}
+        <div class="media text-muted pt-3">
+          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{trend.author}}.png">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: black;text-decoration: none;">@{{trend.author}}</a></strong>
+            <a href="post/{{trend.link}}" style="color: black;text-decoration: none;">{{trend.title}}</a>
+          </p>
+        </div>
+    
+    {% endfor %}
+        <small class="d-block text-right mt-3">
+          <a href="trends">Tüm trendleri görüntüle</a>
+        </small>
+      </div>
+      <div class="infinite-container">
+      {% for post in posts %}
+      <div class="card mb-5 infinite-item">
+      <div class="card-header" style="font-size:20px;font-weight: bold;"><a href="/post/{{post.link}}" style="text-decoration: none; color: black;">{{post.title}}</a>
+      {% if post.author == username %}
+      <div class="btn-group" style="float: right;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="../../post/{{post.link}}/delete" style="text-decoration: none;color: black;">
+                        <button class="dropdown-item" type="button">
+                            <i class="fas fa-trash-alt"></i> Sil
+                        </button>
+                    </a>
+                    <a href="../../post/{{post.link}}/update" style="text-decoration: none;color: black;">
+                        <button class="dropdown-item" type="button">
+                            <i class="fas fa-sync-alt"></i> Değiştir
+                        </button>
+                    </a>
+                </div>
+              </div>
+      {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="blockquote mb-1">
+          <p style="font-size: 17px;">{{post.content}}</p>
+         
+          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/efetemel.png' %}">
+          <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="user/{{post.author}}" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p>
+        </div>
+        <div style="margin-top: 15px;">
+            <p style="color: #6c757d;font-size: 18px;float: right;">{{post.date}}</p>
+            <div style="display: flex;">
+            <p style="color: #6c757d;font-size: 18px;margin-right: 10px;" > <i class="far fa-thumbs-up"></i> 12</p>
+            <p style="color: #6c757d;font-size: 18px;"> <i class="far fa-comment"></i> 12</p>
+          </div>
+        </div>  
+        </div>
+      </div>
+    
+    
+    {% endfor %}
+</div>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>

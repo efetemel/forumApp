@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    background-color: #efefef;
+}
+
+
+.containers{
+    margin-top: 140px;
+    width: 600px;
+    height: 500px;
+    background-color: white;
+}
+
+.title p{
+    padding-top: 35px;
+    font-size:40px;
+    font-weight: bold;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.title span{
+    color: red;
+}
+
+.inputs{
+    padding-top: 23px;
+}
+
+.email{
+    height: 26px;
+    font-size: 22px;
+    padding: 5px;
+}
+
+.desc p{
+ margin-top: 20px;
+ font-family: 'Noto Sans', sans-serif;
+ font-size:26px;
+}
+
+.btn{
+    margin-top: 20px;
+    padding: 10px;
+    width: 150px;
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.btn:hover{
+    cursor:pointer;
+}
+
+.more p{
+    margin-top: 20px;
+}
+
+.more p a{
+    
+    color: #b2b2b2;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 18px;
+    transition: all .2s ease;
+}
+
+.more p a:hover{
+    color: black;
+}
+
+.email::placeholder{
+    font-size: 16px;
+}

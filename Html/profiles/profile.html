@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forumSozluk</title>
+</head>
+{% if is_login == "false" %}
+        {% include 'headers/guest-header.html' %}
+    {% elif is_login == "true" %}
+        {% include 'headers/user-header.html' %}
+    {% endif %} 
+    <body style="background-color:#f8f9fa!important;">
+    <section id="about-us" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="dashboard-area">
+                        <div class="row">
+                            <div class="col-12" style="padding-right: 0px;padding-left: 0px;">
+                                <div class="mb-3" style="background-image: url('{% static  'img/background/efetemel.jpg' %}');background-size:cover;">
+                                    <div class="row" style="margin-left:0px;margin-right:0px">
+                                        <div class="col-12" >
+                                            <a class="position-absolute ml-3 mt-3 text-white" href="setting.html" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit cover images"></a>
+                                            <div class="row">
+                                                <div class="col-12 ">
+                                                   <div class="profiles p-3 my-4 rounded text-center shadow-sm float-left ml-2">
+                                                        <div class="avatars">
+                                                            <a href="setting.html">
+                                                                <img src="{% static 'img/user/' %}{{user.username}}.png" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
+                                                            </a>
+                                                        </div>
+                                                        <div class="names">
+                                                            <h3 class="title text-light">@{{user.username}}</h3>
+                                                            <h3 class="title text-light font-weight-bold">{{user.fullname}}</h3>
+                                                            <a href="#" class="btn btn-link btn-facebook"><i class="fab fa-facebook"></i></a>
+                                                            <a href="#" class="btn btn-link btn-twitter"><i class="fab fa-twitter"></i></a>
+                                                            <a href="#" class="btn btn-link btn-gplus"><i class="fab fa-google-plus"></i></a>
+                                                            <a href="#" class="btn btn-link btn-instagram"><i class="fab fa-instagram"></i></a>
+                                                            <a href="#" class="btn btn-link btn-youtube"><i class="fab fa-youtube"></i></a><br>
+                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.flow}}</strong> Takip</a>
+                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.me_flow}}</strong> Takipçi</a><br>
+                                                            <button type="button" class="btn btn-primary">Takip et</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
+                {% for post in posts %}
+    <div class="card mb-5">
+    <div class="card-header" style="font-size:20px;font-weight: bold;"><a href="" style="text-decoration: none; color: black;">{{post.title}}</a>
+    </div>
+    <div class="card-body">
+      <div class="blockquote mb-1">
+        <p style="font-size: 17px;">{{post.content}}</p>
+        <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{user.username}}.png">
+        <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p>
+      </div>
+      <div style="margin-top: 15px;">
+          <p style="color: #6c757d;font-size: 18px;float: right;">{{post.date}}</p>
+          <div style="display: flex;">
+          <p style="color: #6c757d;font-size: 18px;margin-right: 10px;" > <i class="far fa-thumbs-up"></i> 12</p>
+          <p style="color: #6c757d;font-size: 18px;"> <i class="far fa-comment"></i> 12</p>
+        </div>
+      </div>  
+      </div>
+    </div> 
+    {% endfor %}
+    </div>
+    </section>
+    {% include 'footer.html' %}
+</body>
+</html>
