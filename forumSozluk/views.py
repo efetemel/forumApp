@@ -378,3 +378,7 @@ def readLog():
   dizi = dosya.readlines()
   dosya.close()
   return dizi
+
+def trends(request):
+  response = ""
+  return response
