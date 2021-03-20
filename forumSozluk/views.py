@@ -42,12 +42,12 @@ def login(request):
   posts = Post.objects.order_by('-id')
   trend = Post.objects.order_by('-like_count')
   response = ""
-  if 'username' in request.POST and 'password' in request.POST:
+  if 'email' in request.POST and 'password' in request.POST:
     writeLog('Sayfa Görüntülenmesi', 'Login')
     try:
-      username = request.POST['username']
+      email = request.POST['email']
       password = request.POST['password']
-      user = User.objects.get(username=username)
+      user = User.objects.get(email=email)
       if password == user.password:
         request.session['userID'] = user.userID
         context = {
