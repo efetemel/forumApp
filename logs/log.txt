@@ -5,3 +5,10 @@
 19.03.2021 23:19:03 - Change Password: Şifre sıfırlama süresi doldu
 19.03.2021 23:27:51 - Change Password: Hata oluştu
 19.03.2021 23:27:51 - Sayfa Görüntülenmesi: İndex
+20.03.2021 14:40:03 - Sayfa Görüntülenmesi: İndex
+20.03.2021 14:40:11 - Sayfa Görüntülenmesi: Login
+20.03.2021 14:40:17 - Sayfa Görüntülenmesi: Login
+20.03.2021 14:47:52 - Sayfa Görüntülenmesi: Login
+20.03.2021 14:47:55 - Sayfa Görüntülenmesi: Login
+20.03.2021 14:48:08 - Change Password: Hata oluştu
+20.03.2021 14:48:08 - Sayfa Görüntülenmesi: İndex

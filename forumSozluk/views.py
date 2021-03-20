@@ -292,7 +292,7 @@ def changePassword(request):
             forgotPass = ForgotPassword.objects.get(username=username)
             forgotPass.delete()
             context = {
-              'status': '4'
+              'status': 'İşlem başarıyla tamamlandı'
             }
             response = render(request, "login.html", context)
           else:
