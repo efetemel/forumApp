@@ -39,3 +39,10 @@
 20.03.2021 15:14:54 - Sayfa Görüntülenmesi: İndex
 20.03.2021 15:14:56 - Sayfa Görüntülenmesi: İndex
 20.03.2021 15:16:52 - Sayfa Görüntülenmesi: İndex
+20.03.2021 20:01:18 - Sayfa Görüntülenmesi: İndex
+21.03.2021 02:43:17 - Sayfa Görüntülenmesi: İndex
+21.03.2021 02:50:12 - Sayfa Görüntülenmesi: Login
+21.03.2021 02:50:53 - Sayfa Görüntülenmesi: Login
+21.03.2021 02:50:59 - Sayfa Görüntülenmesi: İndex
+21.03.2021 12:42:50 - Sayfa Görüntülenmesi: İndex
+21.03.2021 13:09:38 - Sayfa görüntülenmesi: Trend

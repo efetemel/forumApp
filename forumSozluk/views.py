@@ -380,5 +380,23 @@ def readLog():
   return dizi
 
 def trends(request):
-  response = ""
+  trend = Post.objects.order_by('-like_count')
+  try:
+    userID = request.session['userID']
+    user = User.objects.get(userID=userID)
+    context = {
+      'is_login': 'true',
+      'trends': trend,
+      'user': user,
+    }
+    writeLog('Sayfa görüntülenmesi', 'Trend')
+    response = render(request,'trends.html',context)
+  except:
+    context = {
+      'is_login': 'false',
+      'trends': trend,
+    }
+    writeLog('Sayfa görüntülenmesi', 'Trend')
+    response = render(request, 'trends.html', context)
   return response
+
