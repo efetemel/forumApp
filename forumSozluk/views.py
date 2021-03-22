@@ -407,11 +407,12 @@ def createPost(request):
     try:
       title = request.POST['title']
       content = request.POST['content']
-      if title !="" and content !="":
+      if title !="" and content !="" and len(content) <= 255:
         userID = request.session['userID']
         user = User.objects.get(userID=userID)
         now = datetime.now()
         tarih = now.strftime("%c")
+        tarih = tarih[0:len(tarih)-3]
         postCreated = Post.objects.create(
           postID="0",
           link=title,
