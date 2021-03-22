@@ -400,3 +400,50 @@ def trends(request):
     response = render(request, 'trends.html', context)
   return response
 
+
+def createPost(request):
+  trend = Post.objects.order_by('-like_count')
+  if 'title' in request.POST and 'content' in request.POST:
+    try:
+      title = request.POST['title']
+      content = request.POST['content']
+      if title !="" and content !="":
+        userID = request.session['userID']
+        user = User.objects.get(userID=userID)
+        now = datetime.now()
+        tarih = now.strftime("%c")
+        postCreated = Post.objects.create(
+          postID="0",
+          link=title,
+          title=title,
+          content=content,
+          author=user.username,
+          publish_date=tarih,
+          like_count="0"
+        )
+        postCreated.save()
+        writeLog('Post Oluşturuldu!', 'Create Post')
+      else:
+        writeLog('Post Oluşturulamadı!', 'Create Post')
+    except:
+      writeLog('Post Oluşturulamadı!', 'Create Post')
+    response = redirect("/")
+  else:
+    try:
+      userID = request.session['userID']
+      user = User.objects.get(userID=userID)
+      context = {
+        'is_login': 'true',
+        'trends': trend,
+        'user': user,
+      }
+      writeLog('Sayfa görüntülenmesi', 'Create Post')
+      response = render(request, 'create-post.html', context)
+    except:
+      context = {
+        'is_login': 'false',
+        'trends': [trend[0], trend[1], trend[2]]
+      }
+      writeLog('Sayfa görüntülenmesi', 'İndex')
+      response = redirect("/",context)
+  return response

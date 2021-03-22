@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözluk</title>
 </head>
-<body style="background-color:#f8f9fa!important;">
+<body style="background-color:#f8f9fa!important;"><!-- sa !-->
     {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
@@ -27,8 +27,23 @@
         </div>
 
     {% endfor %}
+        <small class="d-block text-right mt-3">
+          <a href="trends">Tüm trendleri görüntüle</a>
+        </small>
       </div>
-    </div>
+      <form action="create-post" method="post">
+          {% csrf_token %}
+      <div class="form-group">
+          <h3>Gönderi Oluştur</h3><br>
+        <label for="exampleInputEmail1">Gönderi başlığı</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="EvdeKal">
+      </div>
+      <div class="form-group">
+       <label for="content">Gönderi içeriği</label>
+        <textarea class="form-control" id="content" rows="3" style="min-height: 75px;"  name="content" placeholder="Hayat Eve Sığar."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Paylaş</button>
+    </form>
     </main>
     {% include 'footer.html' %}
 </body>

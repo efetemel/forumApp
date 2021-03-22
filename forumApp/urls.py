@@ -25,5 +25,6 @@ urlpatterns = [
     path('profile/<username>',views.profile),
     path('code-verification',views.verification),
     path('change-password',views.changePassword),
-    path('trends',views.trends)
+    path('trends',views.trends),
+    path('create-post',views.createPost)
 ]
