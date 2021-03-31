@@ -1,19 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
   <title>Coming Soon - Start Bootstrap Theme</title>
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'comming-soon/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="css/coming-soon.min.css" rel="stylesheet">
+  <link href="{% static 'comming-soon/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'comming-soon/css/coming-soon.min.css' %}" rel="stylesheet">
 
 </head>
 
@@ -21,7 +20,7 @@
 
   <div class="overlay"></div>
   <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
-    <source src="mp4/bg.mp4" type="video/mp4">
+    <source src="{% static 'comming-soon/mp4/bg.mp4' %}" type="video/mp4">
   </video>
 
   <div class="masthead">
@@ -65,9 +64,9 @@
     </ul>
   </div>
 
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/coming-soon.min.js"></script>
+  <script src="{% static 'comming-soon/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'comming-soon/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'comming-soon/js/coming-soon.min.js' %}"></script>
 
 </body>
 </html>

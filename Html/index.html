@@ -7,36 +7,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözluk</title>
+    <style>
+::-webkit-input-placeholder { /* Chrome */
+  color: red;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: red;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: red;
+  opacity: 1;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: red;
+  opacity: 1;
+}
+       </style>
 </head>
-<body style="background-color:#f8f9fa!important;"><!-- sa !-->
+<body style="background-color:#18191a!important;"><!-- sa !-->
     {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
-    {% endif %} 
+    {% endif %}
     <main role="main" class="container">
-        <div class="my-3 p-3  rounded shadow-sm" style="background-color:#f8f9fa!important;">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Trendler</h6>
+        <div class="my-3 p-3  rounded shadow-sm" style="background-color:#242526!important;">
+        <h6 class="border-bottom border-gray pb-2 mb-0" style="color: white">Trendler</h6>
         {% for trend in trends %}
-        <div class="media text-muted pt-3">
-          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{trend.author}}.png">
+        <div class="media text-muted pt-3" >
+          <img class="bd-placeholder-img mr-2 rounded" height="50px"  src="{% static 'img/user/' %}{{trend.author}}.png">
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: black;text-decoration: none;">@{{trend.author}}</a></strong>
-            {{trend.title}}
+            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: white;text-decoration: none;">@{{trend.author}}</a></strong>
+            <span style="color: whitesmoke">{{trend.content}}</span>
           </p>
         </div>
-    
+
     {% endfor %}
         <small class="d-block text-right mt-3">
-          <a href="trends">Tüm trendleri görüntüle</a>
+          <a href="trends" style="color: white">Tüm trendleri görüntüle</a>
         </small>
       </div>
-      <div class="infinite-container">
+    {% if user.username != "" %}
+        <div style="display: flex;justify-content: center;align-items: center">
+    <div style="width:100%">
+       <div class="card mb-5 infinite-item" style="background-color:#242526!important;">
+      <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
+      </div>
+      <div class="card-body">
+          <div class="blockquote mb-1">
+            <form  action="create-post" method="post">
+                {% csrf_token %}
+                  <div class="form-group">
+                    <textarea class="form-control" id="content" name="content" rows="3" style="min-height: 50px;background-color: #3a3b3c;border: none;color: white"  placeholder="Hayat nasıl gidiyor, {{ user.username }}!"></textarea>
+                  </div>
+                  <button type="submit" class="btn " style="background-color: #505151;color: white">Paylaş</button>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    {% endif %}
+
       {% for post in posts %}
-      <div class="card mb-5 infinite-item">
-      <div class="card-header" style="font-size:20px;font-weight: bold;">{{post.title}}
+      <div class="card mb-5 infinite-item" style="background-color:#242526 ">
+      <div class="card-header" style="font-size:20px;font-weight: bold;">
+          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/efetemel.png' %}">
+          <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="profile/{{post.author}}" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p><span style="color: whitesmoke"> Yeni bir paylaşım yaptı!</span>
       {% if post.author == username %}
-      <div class="btn-group" style="float: right;">1
+      <div class="btn-group" style="float: right;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-h"></i>
                 </button>
@@ -57,22 +96,17 @@
       </div>
       <div class="card-body">
         <div class="blockquote mb-1">
-          <p style="font-size: 17px;">{{post.content}}</p>
-         
-          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/efetemel.png' %}">
-          <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="user/{{post.author}}" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p>
+          <p style="font-size: 17px;color: white">{{post.content}}</p>
         </div>
         <div style="margin-top: 15px;">
-            <p style="color: #6c757d;font-size: 18px;float: right;">{{post.publish_date}}</p>
+            <p style="color: #6c757d;font-size: 18px;float: left;">{{post.publish_date}}</p>
             <div style="display: flex;">
-            <p style="color: #6c757d;font-size: 18px;margin-right: 10px;" > <i class="far fa-thumbs-up"></i> 12</p>
-            <p style="color: #6c757d;font-size: 18px;"> <i class="far fa-comment"></i> 12</p>
           </div>
-        </div>  
+        </div>
         </div>
       </div>
-    
-    
+
+
     {% endfor %}
 </div>
     </main>

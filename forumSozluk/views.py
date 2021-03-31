@@ -15,14 +15,14 @@ from .models import ForgotPassword
 def index(request):
   userID = ""
   posts = Post.objects.order_by('-id')
-  trend = Post.objects.order_by('-like_count')
+  trends = Post.objects.order_by('-like_count')
   try:
     userID = request.session['userID']
     user = User.objects.get(userID=userID)
     context = {
       'is_login': 'true',
       'posts': posts,
-      'trends': [trend[0], trend[1], trend[2]],
+      'trends': [trends[0], trends[1], trends[2]],
       'user': user,
     }
     writeLog('Sayfa Görüntülenmesi', 'İndex')
@@ -31,7 +31,7 @@ def index(request):
     context = {
       'is_login': 'false',
       'posts': posts,
-      'trends': [trend[0], trend[1], trend[2]],
+      'trends': [trends[0], trends[1], trends[2]],
     }
     writeLog('Sayfa Görüntülenmesi', 'İndex')
     response = render(request, 'index.html', context)
@@ -403,11 +403,10 @@ def trends(request):
 
 def createPost(request):
   trend = Post.objects.order_by('-like_count')
-  if 'title' in request.POST and 'content' in request.POST:
+  if 'content' in request.POST:
     try:
-      title = request.POST['title']
       content = request.POST['content']
-      if title !="" and content !="" and len(content) <= 255:
+      if content !="" and len(content) <= 500:
         userID = request.session['userID']
         user = User.objects.get(userID=userID)
         now = datetime.now()
@@ -415,8 +414,7 @@ def createPost(request):
         tarih = tarih[0:len(tarih)-3]
         postCreated = Post.objects.create(
           postID="0",
-          link=title,
-          title=title,
+          link='',
           content=content,
           author=user.username,
           publish_date=tarih,
@@ -430,21 +428,6 @@ def createPost(request):
       writeLog('Post Oluşturulamadı!', 'Create Post')
     response = redirect("/")
   else:
-    try:
-      userID = request.session['userID']
-      user = User.objects.get(userID=userID)
-      context = {
-        'is_login': 'true',
-        'trends': trend,
-        'user': user,
-      }
-      writeLog('Sayfa görüntülenmesi', 'Create Post')
-      response = render(request, 'create-post.html', context)
-    except:
-      context = {
-        'is_login': 'false',
-        'trends': [trend[0], trend[1], trend[2]]
-      }
-      writeLog('Sayfa görüntülenmesi', 'İndex')
-      response = redirect("/",context)
+      writeLog('Sayfa yönlendirmesi', 'Create Post')
+      response = redirect('/')
   return response

@@ -4,7 +4,7 @@ class User(models.Model):
     userID = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     fullname = models.CharField(max_length=255)
-    email  = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
     birtdate = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     last_join = models.CharField(max_length=255)
@@ -16,8 +16,7 @@ class User(models.Model):
 
 class Post(models.Model):
     postID = models.CharField(max_length=255)
-    link = models.CharField(max_length=255)
-    title = models.CharField(max_length=255)
+    postPreview = models.CharField(max_length=500)
     content = models.CharField(max_length=500)
     author = models.CharField(max_length=255)
     publish_date = models.CharField(max_length=255)

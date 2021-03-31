@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözluk</title>
 </head>
-<body style="background-color:#f8f9fa!important;">
+<body style="background-color:#18191a!important;"><!-- sa !-->
     {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
     {% endif %}
     <main role="main" class="container">
-        <div class="my-3 p-3  rounded shadow-sm" style="background-color:#f8f9fa!important;">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Trendler</h6>
+         <div class="my-3 p-3  rounded shadow-sm" style="background-color:#242526!important;">
+        <h6 class="border-bottom border-gray pb-2 mb-0" style="color: white">Trendler</h6>
         {% for trend in trends %}
-        <div class="media text-muted pt-3">
-          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{trend.author}}.png">
+        <div class="media text-muted pt-3" >
+          <img class="bd-placeholder-img mr-2 rounded" height="50px"  src="{% static 'img/user/' %}{{trend.author}}.png">
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: black;text-decoration: none;">@{{trend.author}}</a></strong>
-            {{trend.title}}
+            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: white;text-decoration: none;">@{{trend.author}}</a></strong>
+            <span style="color: whitesmoke">{{trend.content}}</span>
           </p>
         </div>
 

@@ -54,41 +54,43 @@
                     </div> 
                 </div>
                 {% for post in posts %}
-    <div class="card mb-5">
-    <div class="card-header" style="font-size:20px;font-weight: bold;"><a href="" style="text-decoration: none; color: black;">{{post.title}}</a>
-        <div class="btn-group" style="float: right;">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-h"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a href="../../post/{{post.link}}/delete" style="text-decoration: none;color: black;">
-                    <button class="dropdown-item" type="button">
-                        <i class="fas fa-trash-alt"></i> Sil
-                    </button>
-                </a>
-                <a href="../../post/{{post.link}}/update" style="text-decoration: none;color: black;">
-                    <button class="dropdown-item" type="button">
-                        <i class="fas fa-sync-alt"></i> Değiştir
-                    </button>
-                </a>
-            </div>
-          </div>
-    </div>
-    <div class="card-body">
-      <div class="blockquote mb-1">
-        <p style="font-size: 17px;">{{post.content}}</p>
-        <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{user.username}}.png">
-        <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p>
+      <div class="card mb-5 infinite-item">
+      <div class="card-header" style="font-size:20px;font-weight: bold;">
+          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/efetemel.png' %}">
+          <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="profile/{{post.author}}" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p> Yeni bir paylaşım yaptı!
+      {% if post.author == username %}
+      <div class="btn-group" style="float: right;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="../../post/{{post.link}}/delete" style="text-decoration: none;color: black;">
+                        <button class="dropdown-item" type="button">
+                            <i class="fas fa-trash-alt"></i> Sil
+                        </button>
+                    </a>
+                    <a href="../../post/{{post.link}}/update" style="text-decoration: none;color: black;">
+                        <button class="dropdown-item" type="button">
+                            <i class="fas fa-sync-alt"></i> Değiştir
+                        </button>
+                    </a>
+                </div>
+              </div>
+      {% endif %}
       </div>
-      <div style="margin-top: 15px;">
-          <p style="color: #6c757d;font-size: 18px;float: right;">{{post.date}}</p>
-          <div style="display: flex;">
-          <p style="color: #6c757d;font-size: 18px;margin-right: 10px;" > <i class="far fa-thumbs-up"></i> 12</p>
-          <p style="color: #6c757d;font-size: 18px;"> <i class="far fa-comment"></i> 12</p>
+      <div class="card-body">
+        <div class="blockquote mb-1">
+          <p style="font-size: 17px;">{{post.content}}</p>
         </div>
-      </div>  
+        <div style="margin-top: 15px;">
+            <p style="color: #6c757d;font-size: 18px;float: left;">{{post.publish_date}}</p>
+            <div style="display: flex;">
+          </div>
+        </div>
+        </div>
       </div>
-    </div> 
+
+
     {% endfor %}
     </div>
     </section>

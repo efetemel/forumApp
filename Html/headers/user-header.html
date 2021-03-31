@@ -1,7 +1,7 @@
 {% load static %}
 <script src="https://kit.fontawesome.com/2ec4df04bb.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #242526">
   <a class="navbar-brand" href="../../" style="font-family: 'Noto Sans', sans-serif;" >forum<span style="color:red;">Sözlük</span></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -11,14 +11,11 @@
       <li class="nav-item">
         <a class="nav-link" href="/trends">Trendler</a>
       </li>
-         <li class="nav-item">
-        <a class="nav-link" href="/create-post">Gönderi oluştur</a>
-      </li>
     </ul>
     
     <form class="form-inline my-2 my-lg-0 mr-2">
       <div class="btn-group ml-2">
-        <button type="button" class="btn dropdown-toggle" style="background-color: #343a40!important;color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn dropdown-toggle" style="background-color: #242526!important;color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="{% static 'img/user/' %}{{user.username}}.png" width="30px" alt="">
             {{user.username}}
         </button>
