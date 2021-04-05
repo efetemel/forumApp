@@ -28,4 +28,9 @@ class ForgotPassword(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
-    
+
+
+class Like(models.Model):
+    likeID = models.CharField(max_length=255)
+    likeAuthor = models.CharField(max_length=255)
+    likeDate = models.CharField(max_length=255)

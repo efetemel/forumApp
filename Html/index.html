@@ -1,115 +1,171 @@
 {% load static %}
+{% load ifmethods %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözluk</title>
-    <style>
-::-webkit-input-placeholder { /* Chrome */
-  color: red;
-}
-:-ms-input-placeholder { /* IE 10+ */
-  color: red;
-}
-::-moz-placeholder { /* Firefox 19+ */
-  color: red;
-  opacity: 1;
-}
-:-moz-placeholder { /* Firefox 4 - 18 */
-  color: red;
-  opacity: 1;
-}
-       </style>
+
 </head>
-<body style="background-color:#18191a!important;"><!-- sa !-->
+<body style="background-color:#18191a!important;" >
     {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
     {% endif %}
-    <main role="main" class="container">
-        <div class="my-3 p-3  rounded shadow-sm" style="background-color:#242526!important;">
-        <h6 class="border-bottom border-gray pb-2 mb-0" style="color: white">Trendler</h6>
-        {% for trend in trends %}
-        <div class="media text-muted pt-3" >
-          <img class="bd-placeholder-img mr-2 rounded" height="50px"  src="{% static 'img/user/' %}{{trend.author}}.png">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a href="user/{{trend.author}}" style="color: white;text-decoration: none;">@{{trend.author}}</a></strong>
-            <span style="color: whitesmoke">{{trend.content}}</span>
-          </p>
-        </div>
+    <link rel="stylesheet" href="{% static 'css/widthme.css' %}">
 
+    <main class="container-fluid d-flex justify-content-around justify-content-lg-around justify-content-xl-around justify-content-md-center p-0">
+        <!--SOL!-->
+        <div class="row m-0  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%">
+<div class="p-3 bg-dark text-warning rounded shadow-sm" >
+    <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
+    {% for trend in trends %}
+    <div class="d-flex text-muted pt-3">
+      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+        <strong class="d-block text-white">@{{ trend.author }}</strong>
+        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+      </p>
+    </div>
     {% endfor %}
-        <small class="d-block text-right mt-3">
-          <a href="trends" style="color: white">Tüm trendleri görüntüle</a>
-        </small>
-      </div>
-    {% if user.username != "" %}
-        <div style="display: flex;justify-content: center;align-items: center">
-    <div style="width:100%">
-       <div class="card mb-5 infinite-item" style="background-color:#242526!important;">
-      <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
-      </div>
-      <div class="card-body">
-          <div class="blockquote mb-1">
-            <form  action="create-post" method="post">
-                {% csrf_token %}
-                  <div class="form-group">
-                    <textarea class="form-control" id="content" name="content" rows="3" style="min-height: 50px;background-color: #3a3b3c;border: none;color: white"  placeholder="Hayat nasıl gidiyor, {{ user.username }}!"></textarea>
-                  </div>
-                  <button type="submit" class="btn " style="background-color: #505151;color: white">Paylaş</button>
-                </form>
-            </div>
+    <small class="d-block text-end mt-3">
+      <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+    </small>
+  </div>
         </div>
-      </div>
-    </div>
-    </div>
-    {% endif %}
+        <!--SOL!-->
+        <!--ORTA!-->
+        <div class="row d-flex m-0 mt-5 w-50 justify-content-md-center justify-content-lg-center justify-content-xl-center justify-content-sm-center w-lg-75 w-xl-50 w-md-75 w-sm-100 w-ssm-100" id="centerArea">
 
-      {% for post in posts %}
-      <div class="card mb-5 infinite-item" style="background-color:#242526 ">
-      <div class="card-header" style="font-size:20px;font-weight: bold;">
-          <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/efetemel.png' %}">
-          <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="profile/{{post.author}}" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p><span style="color: whitesmoke"> Yeni bir paylaşım yaptı!</span>
-      {% if post.author == username %}
-      <div class="btn-group" style="float: right;">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="../../post/{{post.link}}/delete" style="text-decoration: none;color: black;">
-                        <button class="dropdown-item" type="button">
-                            <i class="fas fa-trash-alt"></i> Sil
-                        </button>
-                    </a>
-                    <a href="../../post/{{post.link}}/update" style="text-decoration: none;color: black;">
-                        <button class="dropdown-item" type="button">
-                            <i class="fas fa-sync-alt"></i> Değiştir
-                        </button>
-                    </a>
+        <!--SOL FOR MOBİLE !-->
+
+        <div class="p-3 bg-dark text-warning rounded shadow-sm mb-2 d-xl-none d-md-block" >
+            <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
+            {% for trend in trends %}
+            <div class="d-flex text-muted pt-3">
+              <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+
+              <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+                <strong class="d-block text-white">@{{ trend.author }}</strong>
+                Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+              </p>
+            </div>
+            {% endfor %}
+            <small class="d-block text-end mt-3">
+              <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+            </small>
+         </div>
+        <!--SOL FOR MOBİLE !-->
+
+        {% if user.username != "" %}
+            <!--GÖNDERİ OLUŞTUR !-->
+            <div class="card mb-3 infinite-item bg-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+              <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
+              </div>
+              <div class="card-body">
+                  <div class="blockquote mb-1">
+                    <form  action="create-post" method="post">
+                         <fieldset disabled>
+                        {% csrf_token %}
+                          <div class="form-group">
+                              <input type="text" class="form-control bg-dark text-white border-1" id="exampleFormControlInput1" placeholder="Hayat nasıl gidiyor, {{ user.username }}!">
+                          </div>
+                          <button type="button" class="btn mt-2" style="background-color: #505151;color: white">Paylaş</button>
+                        </form>
+                      </fieldset>
+                    </div>
                 </div>
               </div>
-      {% endif %}
-      </div>
-      <div class="card-body">
-        <div class="blockquote mb-1">
-          <p style="font-size: 17px;color: white">{{post.content}}</p>
+            <!--GÖNDERİ OLUŞTUR !-->
+        {% endif %}
+            {% for post in posts %}
+            <div class="card mb-2 bg-dark text-white">
+              <div class="card-header d-flex align-items-center justify-content-start">
+                <img src="{% static 'img/user/' %}{{user.username}}.png" width="36px" class="rounded mt-2 my-1">
+                  <a href="#" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
+                  <span style="margin-left: 10px" class="text-warning">Yeni bir paylaşım yaptı</span>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ post.postPreview }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+                  {% if post.postID|ifmethods:user == "true" %}
+                      <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes"></span>
+                      {% else %}
+                      <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="no"></span>
+                  {% endif %}
+                  <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}">{{ post.like_count }}</strong> Beğeni</span>
+              </div>
+            <small class="mb-2">{{ post.publish_date }}</small>
+            </div>
+            {% endfor %}
         </div>
-        <div style="margin-top: 15px;">
-            <p style="color: #6c757d;font-size: 18px;float: left;">{{post.publish_date}}</p>
-            <div style="display: flex;">
-          </div>
-        </div>
-        </div>
-      </div>
+        <!--ORTA!-->
+        <!--SAĞ!-->
+        <div class="row  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%;margin-right:0px"><div class="p-3 bg-dark text-warning rounded shadow-sm">
+    <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
+    <div class="d-flex text-muted pt-3">
+      <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
 
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+        <strong class="d-block text-warning">@username</strong>
+        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+      </p>
+    </div>
+    <div class="d-flex text-muted pt-3">
+      <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
 
-    {% endfor %}
-</div>
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+        <strong class="d-block text-warning">@username</strong>
+        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+      </p>
+    </div>
+    <div class="d-flex text-muted pt-3">
+      <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+        <strong class="d-block text-warning">@username</strong>
+        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+      </p>
+    </div>
+    <small class="d-block text-end mt-3">
+      <a href="#" class="text-warning text-decoration-none">Tüm trendleri görüntüle</a>
+    </small>
+  </div></div>
+        <!--SAĞ!-->
     </main>
-    {% include 'footer.html' %}
+{% include 'footer.html' %}
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Gönderi oluştur</h5>
+        <a  class="fas fa-times text-white text-decoration-none" data-bs-dismiss="modal" aria-label="Close"></a>
+      </div>
+        <form action="create-post" method="post">
+      <div class="modal-body">
+
+            {% csrf_token %}
+          <div class="mb-3">
+            <label for="title" class="col-form-label text-white">Gönderi başlığı</label>
+            <input type="text" class="form-control bg-dark text-white"  id="title" name="title" placeholder="Corona,Pandemi..." required>
+          </div>
+          <div class="mb-3">
+            <label for="content" class="col-form-label text-white">İçerik</label>
+            <textarea class="form-control bg-dark text-white" id="content" name="content" placeholder="Gündem,Ekonomi..." required></textarea>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-warning"><i class="fas fa-share"></i> Paylaş</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>

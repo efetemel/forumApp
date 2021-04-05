@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.http import HttpResponse
+from django import template
 from django.template.loader import render_to_string
 import string
 from datetime import datetime
@@ -9,7 +11,9 @@ import locale
 from random import *
 from .models import User
 from .models import Post
+from .models import Like
 from .models import ForgotPassword
+
 
 
 def index(request):
@@ -19,11 +23,13 @@ def index(request):
   try:
     userID = request.session['userID']
     user = User.objects.get(userID=userID)
+    allLikes = Like.objects.order_by('-likeDate').filter(likeAuthor=user.username)
     context = {
       'is_login': 'true',
       'posts': posts,
       'trends': [trends[0], trends[1], trends[2]],
       'user': user,
+      'mylikes':allLikes,
     }
     writeLog('Sayfa Görüntülenmesi', 'İndex')
     response = render(request, 'index.html', context)
@@ -403,10 +409,12 @@ def trends(request):
 
 def createPost(request):
   trend = Post.objects.order_by('-like_count')
-  if 'content' in request.POST:
+  if 'content' in request.POST and 'title' in request.POST:
     try:
+
       content = request.POST['content']
-      if content !="" and len(content) <= 500:
+      title = request.POST['title']
+      if content !="" and len(content) <= 500 and title !="":
         userID = request.session['userID']
         user = User.objects.get(userID=userID)
         now = datetime.now()
@@ -414,7 +422,7 @@ def createPost(request):
         tarih = tarih[0:len(tarih)-3]
         postCreated = Post.objects.create(
           postID="0",
-          link='',
+          postPreview=title,
           content=content,
           author=user.username,
           publish_date=tarih,
@@ -431,3 +439,36 @@ def createPost(request):
       writeLog('Sayfa yönlendirmesi', 'Create Post')
       response = redirect('/')
   return response
+
+def like(request):
+  if 'id' in request.POST:
+    try:
+      id = request.POST['id'][3:len(request.POST['id'])]
+      post = Post.objects.get(postID=id)
+      try:
+        userID = request.session['userID']
+        user = User.objects.get(userID=userID)
+        try:
+          likeExist = Like.objects.get(likeID=id,likeAuthor=user.username)
+          print("bulundu")
+          postTotal = post.like_count
+          post.like_count = int(postTotal) - 1
+          post.save()
+          likeExist.delete()
+          print("Oldu gibi :D")
+        except:
+          postTotal = post.like_count
+          post.like_count = int(postTotal) + 1
+          post.save()
+          now = datetime.now()
+          tarih = now.strftime("%c")
+          tarih = tarih[0:len(tarih) - 3]
+          newLike = Like(likeID=post.postID,likeAuthor=post.author,likeDate=tarih)
+          newLike.save()
+      except:
+        pass
+    except:
+      pass
+  else:
+    pass
+  return redirect("/")
