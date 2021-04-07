@@ -8,17 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözluk</title>
-
+    <style>
+        .begen:hover{
+             -webkit-transform: scale(1.5);
+        }
+    </style>
 </head>
 <body style="background-color:#18191a!important;" >
+
     {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
     {% endif %}
+
     <link rel="stylesheet" href="{% static 'css/widthme.css' %}">
 
-    <main class="container-fluid d-flex justify-content-around justify-content-lg-around justify-content-xl-around justify-content-md-center p-0">
+    <main class="container-fluid d-flex justify-content-around justify-content-lg-around justify-content-xl-around justify-content-md-center p-0" role="main">
         <!--SOL!-->
         <div class="row m-0  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%">
 <div class="p-3 bg-dark text-warning rounded shadow-sm" >
@@ -64,7 +70,7 @@
 
         {% if user.username != "" %}
             <!--GÖNDERİ OLUŞTUR !-->
-            <div class="card mb-3 infinite-item bg-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            <div class="card mb-3 bg-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
               <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
               </div>
               <div class="card-body">
@@ -83,27 +89,37 @@
               </div>
             <!--GÖNDERİ OLUŞTUR !-->
         {% endif %}
+        <div class="row infinite-container p-0 m-0">
             {% for post in posts %}
-            <div class="card mb-2 bg-dark text-white">
+            <div class="card mb-2 bg-dark text-white infinite-item">
               <div class="card-header d-flex align-items-center justify-content-start">
-                <img src="{% static 'img/user/' %}{{user.username}}.png" width="36px" class="rounded mt-2 my-1">
-                  <a href="#" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
+                <img src="{% static 'img/user/' %}{{post.author}}.png" width="36px" class="rounded mt-2 my-1">
+                  <a href="../profile/{{ post.author }}" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
                   <span style="margin-left: 10px" class="text-warning">Yeni bir paylaşım yaptı</span>
               </div>
               <div class="card-body">
-                <h5 class="card-title">{{ post.postPreview }}</h5>
+                <h5 class="card-title"><a href="../post/{{post.postID }}" class="text-white text-decoration-none">{{ post.postPreview }}</a></h5>
                 <p class="card-text">{{ post.content }}</p>
+                {% if is_login == "true" %}
                   {% if post.postID|ifmethods:user == "true" %}
-                      <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes"></span>
+                      <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes" style="transition: all 0.3s;"></span>
                       {% else %}
-                      <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="no"></span>
+                      <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="no" style=" transition: all 0.3s;"></span>
                   {% endif %}
-                  <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}">{{ post.like_count }}</strong> Beğeni</span>
+                    {% else %}
+                    <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}/" data-token="{{ csrf_token}}" like="not" style=" transition: all 0.3s;" data-bs-toggle="modal" data-bs-target="#exampleModal1"></span>
+              {% endif %}
+                  <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}" class="begen">{{ post.like_count }}</strong> Beğeni</span>
               </div>
             <small class="mb-2">{{ post.publish_date }}</small>
             </div>
             {% endfor %}
+        <p class="pagination">
+            <a class="pagination__next" href="page2.html">Next page</a>
+        </p>
         </div>
+        </div>
+
         <!--ORTA!-->
         <!--SAĞ!-->
         <div class="row  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%;margin-right:0px"><div class="p-3 bg-dark text-warning rounded shadow-sm">
@@ -138,7 +154,7 @@
   </div></div>
         <!--SAĞ!-->
     </main>
-{% include 'footer.html' %}
+
 <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content bg-dark">
@@ -167,5 +183,23 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Görünüşe göre Beğenmek istedin?</h5>
+        <a  class="fas fa-times text-white text-decoration-none" data-bs-dismiss="modal" aria-label="Close"></a>
+      </div>
+      <div class="modal-body text-white">
+        Eğer Beğenmek ve benzeri işlemler yapmak istersen. Kayıt olabilirsin
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary text-white" data-bs-dismiss="modal">Kapat</button>
+          <button type="button" class="btn btn-primary text-white"><a href="../register" class="text-white text-decoration-none">Kayıt ol</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %}
 </body>
 </html>

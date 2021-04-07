@@ -15,7 +15,7 @@ $(function (){
            old = Number(old+1);
            likeCountStrong.innerText = old;
        }
-       else{
+       else if (like == "yes"){
            likeObje = document.getElementById(id);
            likeObje.className = 'likeBtn far fa-thumbs-up fs-4';
            nesne.attr("like","no");
@@ -30,6 +30,8 @@ $(function (){
                likeCountStrong.innerText = old;
            }
        }
+
+
        $.ajax({
            url:"like",
            data:{

@@ -13,12 +13,26 @@ from .models import User
 from .models import Post
 from .models import Like
 from .models import ForgotPassword
-
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 
 def index(request):
   userID = ""
-  posts = Post.objects.order_by('-id')
+  post_list = Post.objects.order_by('-id')
+  paginator = Paginator(post_list, 10)
+  page = request.GET.get('page', 1)
+  try:
+    if int(page) > int(paginator.num_pages):
+      return redirect("/")
+    else:
+      try:
+        posts = paginator.page(page)
+      except PageNotAnInteger:
+        posts = paginator.page(1)
+      except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+  except:
+    return redirect("/")
   trends = Post.objects.order_by('-like_count')
   try:
     userID = request.session['userID']
