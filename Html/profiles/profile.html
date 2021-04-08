@@ -1,4 +1,6 @@
 {% load static %}
+{% load ifmethods %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +13,8 @@
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
-    {% endif %} 
-    <body style="background-color:#f8f9fa!important;">
+    {% endif %}
+    <body style="background-color:#18191a!important;" >
     <section id="about-us" class="py-5">
         <div class="container">
             <div class="row">
@@ -20,13 +22,13 @@
                     <div class="dashboard-area">
                         <div class="row">
                             <div class="col-12" style="padding-right: 0px;padding-left: 0px;">
-                                <div class="mb-3" style="background-image: url('{% static  'img/background/efetemel.jpg' %}');background-size:cover;">
+                                <div class="mb-3"style="background-image: url('{% static  'img/background/efetemel.jpg' %}');background-size:cover;">
                                     <div class="row" style="margin-left:0px;margin-right:0px">
-                                        <div class="col-12" >
+                                        <div class="col-12">
                                             <a class="position-absolute ml-3 mt-3 text-white" href="setting.html" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit cover images"></a>
                                             <div class="row">
-                                                <div class="col-12 ">
-                                                   <div class="profiles p-3 my-4 rounded text-center shadow-sm float-left ml-2">
+                                                <div class="col-12">
+                                                   <div class="profiles p-3 my-4 rounded text-center float-left ml-2">
                                                         <div class="avatars">
                                                             <a href="setting.html">
                                                                 <img src="{% static 'img/user/' %}{{user.username}}.png" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
@@ -41,9 +43,9 @@
                                                             <a href="#" class="btn btn-link btn-instagram"><i class="fab fa-instagram"></i></a>
                                                             <a href="#" class="btn btn-link btn-youtube"><i class="fab fa-youtube"></i></a><br>
                                                             <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.flow}}</strong> Takip</a>
-                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.me_flow}}</strong> Takipçi</a><br>
-                                                            <button type="button" class="btn btn-primary">Takip et</button>
-
+                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.me_flow}}</strong> Takipçi</a>
+                                                            <br>
+                                                            <button type="button" class="btn btn-primary">yapılacak</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -52,31 +54,58 @@
                                      </div>
                                 </div>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                 </div>
-                {% for post in posts %}
-    <div class="card mb-5">
-    <div class="card-header" style="font-size:20px;font-weight: bold;">{{post.title}}
-    </div>
-    <div class="card-body">
-      <div class="blockquote mb-1">
-        <p style="font-size: 17px;">{{post.content}}</p>
-        <img class="bd-placeholder-img mr-2 rounded" height="50px" src="{% static 'img/user/' %}{{user.username}}.png">
-        <p style="font-size: 17px;padding-top: 5px;display: inline;"><a href="" style="color: #6c757d;text-decoration: none;">@{{post.author}}</a></p>
-      </div>
-      <div style="margin-top: 15px;">
-          <p style="color: #6c757d;font-size: 18px;float: right;">{{post.date}}</p>
-          <div style="display: flex;">
-          <p style="color: #6c757d;font-size: 18px;margin-right: 10px;" > <i class="far fa-thumbs-up"></i> 12</p>
-          <p style="color: #6c757d;font-size: 18px;"> <i class="far fa-comment"></i> 12</p>
+
+                <div class="row infinite-container p-0 m-0">
+            {% for post in posts %}
+            <div class="card mb-2 bg-dark text-white infinite-item">
+              <div class="card-header d-flex align-items-center justify-content-start">
+                <img src="{% static 'img/user/' %}{{post.author}}.png" width="36px" class="rounded mt-2 my-1">
+                  <a href="../profile/{{ post.author }}" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
+                  <span style="margin-left: 10px" class="text-warning">Yeni bir paylaşım yaptı</span>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="../post/{{post.postID }}" class="text-white text-decoration-none">{{ post.postPreview }}</a></h5>
+                <p class="card-text">{{ post.content }}</p>
+                {% if is_login == "true" %}
+                  {% if post.postID|ifmethods:user == "true" %}
+                      <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes" style="transition: all 0.3s;"></span>
+                      {% else %}
+                      <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="no" style=" transition: all 0.3s;"></span>
+                  {% endif %}
+                    {% else %}
+                    <span class="likeBtn far fa-thumbs-up fs-4" id="{{ post.postID }}/" data-token="{{ csrf_token}}" like="not" style=" transition: all 0.3s;" data-bs-toggle="modal" data-bs-target="#exampleModal1"></span>
+              {% endif %}
+                  <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}" class="begen">{{ post.like_count }}</strong> Beğeni</span>
+              </div>
+            <small class="mb-2">{{ post.publish_date }}</small>
+            </div>
+            {% endfor %}
+        <p class="pagination">
+            <a class="pagination__next" href="page2.html">Next page</a>
+        </p>
         </div>
-      </div>  
-      </div>
-    </div> 
-    {% endfor %}
-    </div>
+        </div>
     </section>
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Görünüşe göre Beğenmek istedin?</h5>
+        <a  class="fas fa-times text-white text-decoration-none" data-bs-dismiss="modal" aria-label="Close"></a>
+      </div>
+      <div class="modal-body text-white">
+        Eğer Beğenmek ve benzeri işlemler yapmak istersen. Kayıt olabilirsin
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary text-white" data-bs-dismiss="modal">Kapat</button>
+          <button type="button" class="btn btn-primary text-white"><a href="../register" class="text-white text-decoration-none">Kayıt ol</a></button>
+      </div>
+    </div>
+  </div>
+</div>
     {% include 'footer.html' %}
 </body>
 </html>

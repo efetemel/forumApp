@@ -14,6 +14,7 @@ from .models import Post
 from .models import Like
 from .models import ForgotPassword
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.views.generic.list import ListView
 
 
 def index(request):
@@ -23,7 +24,7 @@ def index(request):
   page = request.GET.get('page', 1)
   try:
     if int(page) > int(paginator.num_pages):
-      return redirect("/")
+      posts = ""
     else:
       try:
         posts = paginator.page(page)
@@ -125,7 +126,21 @@ def logout(request):
 def profile(request, username):
   try:
     user = User.objects.get(username=username)
-    posts = Post.objects.filter(author=user.username).order_by('-id')
+    post_list = Post.objects.filter(author=user.username).order_by('-id')
+    paginator = Paginator(post_list, 10)
+    page = request.GET.get('page', 1)
+    try:
+      if int(page) > int(paginator.num_pages):
+        posts = ""
+      else:
+        try:
+          posts = paginator.page(page)
+        except PageNotAnInteger:
+          posts = paginator.page(1)
+        except EmptyPage:
+          posts = paginator.page(paginator.num_pages)
+    except:
+      return redirect("/")
     trend = Post.objects.order_by('-like_count')
     is_login = 'false'
     myUserId = ""
@@ -485,4 +500,11 @@ def like(request):
       pass
   else:
     pass
+  return redirect("/")
+
+
+
+#Settings
+
+def mysettings(request,username):
   return redirect("/")

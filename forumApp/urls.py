@@ -23,6 +23,7 @@ urlpatterns = [
     path('register',views.register),
     path('forgot-password',views.forgot_password),
     path('profile/<username>',views.profile),
+    path('settings/<username>', views.mysettings),
     path('code-verification',views.verification),
     path('change-password',views.changePassword),
     path('trends',views.trends),
