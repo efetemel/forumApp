@@ -28,5 +28,7 @@ urlpatterns = [
     path('change-password',views.changePassword),
     path('trends',views.trends),
     path('create-post',views.createPost),
-    path('like',views.like)
+    path('like',views.like),
+    path('post/<postID>', views.details),
+
 ]

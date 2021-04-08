@@ -492,7 +492,7 @@ def like(request):
           now = datetime.now()
           tarih = now.strftime("%c")
           tarih = tarih[0:len(tarih) - 3]
-          newLike = Like(likeID=post.postID,likeAuthor=post.author,likeDate=tarih)
+          newLike = Like(likeID=post.postID,postAuthor=post.author,likeAuthor=user.username,likeDate=tarih)
           newLike.save()
       except:
         pass
@@ -503,8 +503,44 @@ def like(request):
   return redirect("/")
 
 
+def details(request,postID):
+  userID = ""
+  trends = Post.objects.order_by('-like_count')
+  try:
+    onePost = Post.objects.get(postID=postID)
+    userID = request.session['userID']
+    user = User.objects.get(userID=userID)
+    allLikes = Like.objects.order_by('-likeDate').filter(likeAuthor=user.username)
+    context = {
+      'is_login': 'true',
+      'posts': [onePost],
+      'trends': [trends[0], trends[1], trends[2]],
+      'user': user,
+      'mylikes': allLikes,
+    }
+    writeLog('Sayfa Görüntülenmesi', 'details')
+    response = render(request, 'details.html', context)
+  except:
+    writeLog('Sayfa Görüntülenmesi', 'details to Index')
+    response = redirect("/")
+  return response
+
 
 #Settings
 
 def mysettings(request,username):
-  return redirect("/")
+  try:
+    user = User.objects.get(username=username)
+    userID = request.session['userID']
+    if user.userID == userID:
+      context = {
+        'is_login': 'true',
+        'user': user,
+        'set':'true'
+      }
+      response = render(request, 'settings.html', context)
+    else:
+      response = redirect("/")
+  except:
+    response = redirect("/")
+  return response

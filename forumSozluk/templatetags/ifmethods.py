@@ -10,11 +10,23 @@ register = template.Library()
 def ifmethods(postID,user):
     status = "none"
     try:
-        myLikes = Like.objects.get(likeID=postID)
-        if myLikes.likeAuthor == user.username:
+        likes = Like.objects.get(postAuthor=user.username,likeID=postID)
+        print(likes.postAuthor+" Post Sahibiyiz!")
+        print(likes.likeAuthor+" Beğenen")
+        if likes.likeAuthor == user.username:
             status = "true"
+            print("Beğendik")
         else:
             status = "false"
+            print("Beğenmedik")
     except:
-        status = "false"
+        likes = Like.objects.get(likeAuthor=user.username,likeID=postID)
+        print(likes.likeAuthor + " Like Sahibiyiz!")
+        print(likes.postAuthor + " Post Sahibi")
+        if likes.likeAuthor == user.username:
+            status = "true"
+            print("Beğendik")
+        else:
+            status = "false"
+            print("Beğenmedik")
     return status

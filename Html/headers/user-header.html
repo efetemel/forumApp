@@ -26,11 +26,19 @@
         </a>
         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
           <li><a class="dropdown-item " href="../profile/{{user.username}}"><i class="fas fa-user-circle"></i> Profil</a></li>
-          <li><a class="dropdown-item" href="../settings"><i class="fas fa-cog"></i> Ayarlar</a></li>
+          <li><a class="dropdown-item" href="../settings/{{ user.username }}"><i class="fas fa-cog"></i> Ayarlar</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="../logout"><i class="fas fa-sign-out-alt"></i> Çıkış yap</a></li>
         </ul>
       </div>
+        {% if set == 'true' %}
+            <br>
+            <span class="mr-2"> </span>
+             <button class="navbar-toggler float-right pos-absolute  d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+             <i class="fas fa-sort-down text-warning"></i>
+  </button>
+        {% endif %}
     </div>
+
   </div>
 </header>

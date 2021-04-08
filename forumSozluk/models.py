@@ -32,5 +32,6 @@ class ForgotPassword(models.Model):
 
 class Like(models.Model):
     likeID = models.CharField(max_length=255)
+    postAuthor = models.CharField(max_length=255)
     likeAuthor = models.CharField(max_length=255)
     likeDate = models.CharField(max_length=255)

@@ -11,9 +11,9 @@ $(function (){
            nesne.attr("like","yes");
            likeCount = document.getElementById(id+'-'+id);
            likeCountStrong = document.getElementById(id+'-'+id+'-'+id);
-           old = likeCountStrong.innerText;
-           old = Number(old+1);
-           likeCountStrong.innerText = old;
+           old = Number(likeCountStrong.textContent);
+           old1 = Number(old+1);
+           likeCountStrong.textContent = old1;
        }
        else if (like == "yes"){
            likeObje = document.getElementById(id);
@@ -21,13 +21,13 @@ $(function (){
            nesne.attr("like","no");
            likeCount = document.getElementById(id+'-'+id);
            likeCountStrong = document.getElementById(id+'-'+id+'-'+id);
-           old = likeCountStrong.innerText;
+           old = Number(likeCountStrong.textContent);
            if(old == 0){
-               likeCountStrong.innerText = old;
+               likeCountStrong.textContent = Number(old);
            }
            else{
                 old = Number(old-1);
-               likeCountStrong.innerText = old;
+               likeCountStrong.textContent = old;
            }
        }
 

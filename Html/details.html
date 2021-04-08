@@ -1,73 +1,75 @@
 {% load static %}
 {% load ifmethods %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>forumSozluk</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>forumSözluk</title>
+    <style>
+        .begen:hover{
+             -webkit-transform: scale(1.5);
+        }
+    </style>
 </head>
-{% if is_login == "false" %}
+<body style="background-color:#18191a!important;" >
+
+    {% if is_login == "false" %}
         {% include 'headers/guest-header.html' %}
     {% elif is_login == "true" %}
         {% include 'headers/user-header.html' %}
-    {% endif %} 
-    <body style="background-color:#18191a!important;" >
-    <section id="about-us" class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="dashboard-area">
-                        <div class="row">
-                            <div class="col-12" style="padding-right: 0px;padding-left: 0px;">
-                                <div class="mb-3"style="background-image: url('{% static  'img/background/efetemel.jpg' %}');background-size:cover;">
-                                    <div class="row" style="margin-left:0px;margin-right:0px">
-                                        <div class="col-12">
-                                            <a class="position-absolute ml-3 mt-3 text-white" href="setting.html" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit cover images"><i class="fas fa-cog"></i></a>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                   <div class="profiles p-3 my-4 rounded text-center float-left ml-2">
-                                                        <div class="avatars">
-                                                            <a href="setting.html">
-                                                                <img src="{% static 'img/user/' %}{{user.username}}.png" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
-                                                            </a>
-                                                        </div>
-                                                        <div class="names">
-                                                            <h3 class="title text-light">@{{user.username}}</h3>
-                                                            <h3 class="title text-light font-weight-bold">{{user.fullname}}</h3>
-                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.flow}}</strong> Takip</a>
-                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.me_flow}}</strong> Takipçi</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                         </div>
-                                     </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div> 
-                </div>
-             <div class="card mb-2 bg-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
-              <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
-              </div>
-              <div class="card-body">
-                  <div class="blockquote mb-1">
-                    <form  action="create-post" method="post">
-                         <fieldset disabled>
-                        {% csrf_token %}
-                          <div class="form-group">
-                              <input type="text" class="form-control bg-dark text-white border-1" id="exampleFormControlInput1" placeholder="Hayat nasıl gidiyor, {{ user.username }}!">
-                          </div>
-                          <button type="button" class="btn mt-2" style="background-color: #505151;color: white">Paylaş</button>
-                        </form>
-                      </fieldset>
-                    </div>
-                </div>
-              </div>
-                <div class="row infinite-container p-0 m-0">
+    {% endif %}
+
+    <link rel="stylesheet" href="{% static 'css/widthme.css' %}">
+
+    <main class="container-fluid d-flex justify-content-around justify-content-lg-around justify-content-xl-around justify-content-md-center p-0" role="main">
+        <!--SOL!-->
+        <div class="row m-0  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%">
+<div class="p-3 bg-dark text-warning rounded shadow-sm" >
+    <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
+    {% for trend in trends %}
+    <div class="d-flex text-muted pt-3">
+      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+          <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
+        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+      </p>
+    </div>
+    {% endfor %}
+    <small class="d-block text-end mt-3">
+      <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+    </small>
+  </div>
+        </div>
+        <!--SOL!-->
+        <!--ORTA!-->
+        <div class="row d-flex m-0 mt-5 w-50 justify-content-md-center justify-content-lg-center justify-content-xl-center justify-content-sm-center w-lg-75 w-xl-50 w-md-75 w-sm-100 w-ssm-100" id="centerArea">
+
+        <!--SOL FOR MOBİLE !-->
+
+        <div class="p-3 bg-dark text-warning rounded shadow-sm mb-2 d-xl-none d-md-block" >
+            <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
+            {% for trend in trends %}
+            <div class="d-flex text-muted pt-3">
+              <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+
+              <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
+                  <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
+                Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+              </p>
+            </div>
+            {% endfor %}
+            <small class="d-block text-end mt-3">
+              <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+            </small>
+         </div>
+        <!--SOL FOR MOBİLE !-->
+
+
+        <div class="infinite-container p-0 m-0">
             {% for post in posts %}
             <div class="card mb-2 bg-dark text-white infinite-item">
               <div class="card-header d-flex align-items-center justify-content-start">
@@ -92,13 +94,25 @@
             <small class="mb-2">{{ post.publish_date }}</small>
             </div>
             {% endfor %}
-        {% if posts.has_next %}
+{% if posts.has_next %}
     <a class="infinite-more-link d-none"  href="?page={{ posts.next_page_number }}">More</a>
   {% endif %}
         </div>
+
+        <div class="loading" style="display: none;">
+    Loading...
+  </div>
         </div>
-    </section>
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <!--ORTA!-->
+        <!--SAĞ!-->
+        <div class="row  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%;margin-right:0px">
+            <img src="https://cdn.discordapp.com/attachments/759029621018198076/829420033670643732/foto3_copy_200x400.png" class="p3">
+        </div>
+        <!--SAĞ!-->
+    </main>
+
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content bg-dark">
       <div class="modal-header">
@@ -126,7 +140,7 @@
     </div>
   </div>
 </div>
-    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content bg-dark">
       <div class="modal-header">
@@ -143,6 +157,6 @@
     </div>
   </div>
 </div>
-    {% include 'footer.html' %}
+{% include 'footer.html' %}
 </body>
 </html>
