@@ -4,71 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <title>forumSözlük</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 {% include 'headers/guest-header.html'%}
-<body style="background-color:#f8f9fa!important;" class="text-center">
-   <div class="limiter">
-		<div class="container-login100" style="background-image: url('{% static 'images/img-01.jpg' %}');">
-			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form" action="login" method="post">
-                    {% csrf_token %}
-					<span class="login100-form-title p-t-20 p-b-45">
-						Hesabına giriş yap
-					</span>
+<body class="bg-dark">
+    <main class="container-fluid  d-flex justify-content-center">
+        <form action="login" method="post" class="p-4 w-50 needs-validation">
+            {% csrf_token %}
+            <h4 class="text-warning text-center pt-3">Giriş yap</h4>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label text-warning">E-posta Adresi</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="corona@gmail.com" required>
+            </div>
 
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Boş bırakılamaz">
-						<input class="input100" type="email" name="email" placeholder="E-posta">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-user"></i>
-						</span>
-					</div>
+             <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label text-warning">Şifre</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Şifre" required>
+            </div>
 
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Boş bırakılamaz">
-						<input class="input100" type="password" name="password" placeholder="Şifre">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-lock"></i>
-						</span>
-					</div>
-
-					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn">
-							Giriş yap
-						</button>
-					</div>
-
-					<div class="text-center w-full p-t-25 p-b-230">
-						<a href="../forgot-password" class="txt1">
-							Şifremi Unuttum
-						</a>
-					</div>
-
-					<div class="text-center w-full">
-						<a class="txt1" href="../register">
-							Yeni hesap oluştur
-							<i class="fa fa-long-arrow-right"></i>
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+            <div class="col-auto mt-3">
+                <button type="submit" class="btn btn-primary mb-3">Giriş yap</button>
+            </div>
+            <a href="../register" class="text-warning text-decoration-none">Hesabım yok</a><span class="text-white"> veya </span><a href="../forgot-password" class="text-warning text-decoration-none">Şifremi unuttum</a>
+        </form>
+    </main>
     {% include 'footer.html' %}
-    <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

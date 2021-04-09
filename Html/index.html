@@ -1,5 +1,7 @@
 {% load static %}
 {% load ifmethods %}
+{% load smallStr %}
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -31,16 +33,16 @@
     <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
     {% for trend in trends %}
     <div class="d-flex text-muted pt-3">
-      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static '../media/profile/' %}{{trend.author}}.jpg"><title>Placeholder</title></img>
 
       <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
           <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
-        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+        {{ trend | smallStr }}
       </p>
     </div>
     {% endfor %}
     <small class="d-block text-end mt-3">
-      <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+      <a href="../trends" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
     </small>
   </div>
         </div>
@@ -54,11 +56,11 @@
             <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
             {% for trend in trends %}
             <div class="d-flex text-muted pt-3">
-              <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+              <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static '../media/profile/' %}{{trend.author}}.jpg"><title>Placeholder</title></img>
 
               <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
                   <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
-                Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+                {{ trend.content }}
               </p>
             </div>
             {% endfor %}
@@ -93,7 +95,7 @@
             {% for post in posts %}
             <div class="card mb-2 bg-dark text-white infinite-item">
               <div class="card-header d-flex align-items-center justify-content-start">
-                <img src="{% static 'img/user/' %}{{post.author}}.png" width="36px" class="rounded mt-2 my-1">
+                <img src="{% static '../media/profile/' %}{{post.author}}.jpg" width="36px" class="rounded mt-2 my-1">
                   <a href="../profile/{{ post.author }}" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
                   <span style="margin-left: 10px" class="text-warning">Yeni bir paylaşım yaptı</span>
               </div>
@@ -111,7 +113,7 @@
               {% endif %}
                   <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}" class="begen">{{ post.like_count }}</strong> Beğeni</span>
               </div>
-            <small class="mb-2">{{ post.publish_date }}</small>
+            <small class="mb-2" style="margin-left: 15px;margin-bottom: 15px">{{ post.publish_date }}</small>
             </div>
             {% endfor %}
 {% if posts.has_next %}

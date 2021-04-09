@@ -3,6 +3,7 @@ from django.db import models
 class User(models.Model):
     userID = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
+    photo = models.FileField(null=True, blank=True, upload_to="Images/")
     fullname = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     birtdate = models.CharField(max_length=255)

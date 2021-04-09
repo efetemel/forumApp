@@ -29,12 +29,12 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active text-warning" aria-current="page" href="#">
+            <a class="nav-link active text-warning" id="general-btn" aria-current="page" href="#">
               <i class="fas fa-home"></i> Genel Ayarlar
             </a>
           </li>
             <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="#">
+            <a class="nav-link active text-white" id="settings-btn" aria-current="page" href="#">
               <i class="fas fa-lock"></i> Güvenlik ve Gizlilik
             </a>
           </li>
@@ -54,19 +54,62 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2 text-warning"><i class="fas fa-home"></i> Genel Ayarlar</h1>
+        <h1 class="h2 text-warning" id="settings-text">Genel Ayarlar</h1>
       </div>
         <div class= "d-flex flex-column justify-content-center">
-                <div class= "bg-dark p-3 m-0 mb-2">
-                    <h5 class="text-warning"><i class="fas fa-home"></i> Genel Bilgiler</h5>
-                   <div><a href="" class="text-warning text-decoration-none"><i class="fas fa-user"></i> Kullanıcı Adı düzenle</a></div>
-                    <div><a href="" class="text-warning text-decoration-none"><i class="fas fa-portrait"></i> Ad Soyad düzenle</a></div>
+                <div class= "bg-dark p-3 m-0 mb-2" id="general-settings">
+                   <div><a href="" class="text-white text-decoration-none"><i class="fas fa-user"></i> Kullanıcı Adı düzenle</a></div>
+                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-portrait"></i> Ad Soyad düzenle</a></div>
                 </div>
-                <div class= "bg-dark p-3 m-0 mb-2">
-                    <h5 class="text-warning"><i class="fas fa-lock"></i> Güvenlik ve Giriş</h5>
-                    <div><a href="" class="text-warning text-decoration-none"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
-                    <div><a href="" class="text-warning text-decoration-none"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
+                <div class= "bg-dark p-3 m-0 mb-2 d-none" id="security-settings">
+                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
+                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
                 </div>
+
+            <div class= "bg-dark p-3 m-0 mb-2" id="name-change-container">
+                <form method="post">
+                    <h6 class="text-warning">Mevcut Kullanıcı Adı</h6>
+                    <input class="form-control" type="text" placeholder="{{ user.username }}" aria-label="Disabled input example" disabled readonly>
+                    <br>
+                    <h6 class="text-warning">Yeni Kullanıcı Adı</h6>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newUsername" placeholder="corona" required>
+                    <br>
+                    <h6 class="text-warning">Mevcut Şifre</h6>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password" placeholder="Şifre" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary mb-3">Kullanıcı Adını Güncelle</button>
+                </form>
+            </div>
+
+            <div class= "bg-dark p-3 m-0 mb-2" id="email-change-container">
+                <form method="post">
+                    <h6 class="text-warning">Mevcut E-posta</h6>
+                    <input class="form-control" type="email" placeholder="{{ user.email }}" aria-label="Disabled input example" disabled readonly>
+                    <br>
+                    <h6 class="text-warning">Yeni E-Posta</h6>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" name="newEmail" placeholder="corona@gmail.com" required>
+                    <br>
+                    <h6 class="text-warning">Mevcut Şifre</h6>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password" placeholder="Şifre" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary mb-3">E-posta Güncelle</button>
+                </form>
+            </div>
+
+            <div class= "bg-dark p-3 m-0 mb-2" id="password-change-container">
+                <form method="post">
+                    <h6 class="text-warning">Mevcut Şifre</h6>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="currentPassword" placeholder="Mevcut Şifre" required>
+                    <br>
+                    <h6 class="text-warning">Yeni Şifre</h6>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="newPassword" placeholder="Yeni Şifre" required>
+                    <br>
+                    <h6 class="text-warning">Yeni Şifre Tekrar</h6>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="newPasswordR" placeholder="Yeni Şifre Tekrar" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary mb-3">Şifre Güncelle</button>
+                </form>
+            </div>
 
     </main>
   </div>
@@ -74,5 +117,39 @@
 
 
 {% include 'footer.html' %}
+<script>
+    var generalBtn = document.getElementById("general-btn");
+    var securityBtn = document.getElementById("settings-btn");
+    var settingsText = document.getElementById("settings-text");
+
+	generalBtn.onclick=function(){
+	    settingsText.textContent = "Genel Ayarlar";
+
+        document.querySelector('#general-btn').classList.remove('text-white');
+		document.querySelector('#general-btn').classList.add('text-warning');
+
+		document.querySelector('#settings-btn').classList.remove('text-warning');
+		document.querySelector('#settings-btn').classList.add('text-white');
+
+        document.querySelector('#general-settings').classList.remove('d-none');
+		document.querySelector('#general-settings').classList.add('d-block');
+		document.querySelector('#security-settings').classList.remove('d-block');
+        document.querySelector('#security-settings').classList.add('d-none');
+	}
+	securityBtn.onclick=function(){
+        settingsText.textContent = "Güvenlik ve Gizlilik";
+
+        document.querySelector('#settings-btn').classList.remove('text-white');
+		document.querySelector('#settings-btn').classList.add('text-warning');
+
+		document.querySelector('#general-btn').classList.remove('text-warning');
+		document.querySelector('#general-btn').classList.add('text-white');
+
+		document.querySelector('#general-settings').classList.remove('d-block');
+		document.querySelector('#general-settings').classList.add('d-none');
+		document.querySelector('#security-settings').classList.remove('d-none');
+        document.querySelector('#security-settings').classList.add('d-block');
+	}
+</script>
 </body>
 </html>

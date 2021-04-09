@@ -77,7 +77,7 @@ def login(request):
           'trends': [trend[0], trend[1], trend[2]],
           'user': user,
         }
-        response = render(request, 'index.html', context)
+        response = redirect("/", context)
       else:
         response = render(request, 'login.html')
     except:
@@ -94,7 +94,7 @@ def login(request):
         'trends': [trend[0], trend[1], trend[2]],
         'user': user,
       }
-      response = render(request, 'index.html', context)
+      response = redirect("/", context)
     except:
       response = render(request, 'login.html')
   return response
@@ -112,14 +112,14 @@ def logout(request):
       'posts': posts,
       'trends': [trend[0], trend[1], trend[2]],
     }
-    response = render(request, 'index.html', context)
+    response = redirect("/", context)
   except:
     context = {
       'is_login': 'false',
       'posts': posts,
       'trends': [trend[0], trend[1], trend[2]],
     }
-    response = render(request, 'index.html', context)
+    response = redirect("/", context)
   return response
 
 
@@ -179,9 +179,11 @@ def profile(request, username):
 
   return response
 
+from django.core.files.storage import FileSystemStorage
+
 
 def register(request):
-  if 'username' in request.POST and 'email' in request.POST and 'password' in request.POST and 'rpassword' in request.POST and 'first_name' in request.POST and 'last_name' in request.POST:
+  if 'username' in request.POST and 'email' in request.POST and 'date' in request.POST and 'password' in request.POST and 'rpassword' in request.POST and 'first_name' in request.POST and 'last_name' in request.POST and 'image' in request.FILES:
     try:
       username = request.POST['username']
       password = request.POST['password']
@@ -189,25 +191,39 @@ def register(request):
       first_name = request.POST['first_name']
       last_name = request.POST['last_name']
       email = request.POST['email']
+      image = request.FILES['image']
+      date = request.POST['date']
+      fs = FileSystemStorage()
+      filename = fs.save("profile/"+username+".jpg", image)
+
+      uploaded_file_url = fs.url(filename)
+      print(uploaded_file_url)
       user = ""
       try:
         user = User.objects.get(username=username)
         user2 = User.objects.get(email=email)
         response = redirect("/")
       except:
+        count = ""
+        try:
+          count = User.objects.all()
+        except:
+          count = 0
         if password == rpassword:
           newUser = User(
-            userID='2',
+            userID=len(count)+1,
             username=username,
+            photo=uploaded_file_url,
             fullname=first_name + ' ' + last_name,
             email=email,
-            birtdate='',
+            birtdate=date,
             password=password,
             last_join='',
             about='me',
             me_flow='0',
             flow='0'
           )
+          request.session['userID'] = len(count)+1
           newUser.save()
           sendMailRegister(email, first_name)
           response = redirect("/")
@@ -524,6 +540,8 @@ def details(request,postID):
     writeLog('Sayfa Görüntülenmesi', 'details to Index')
     response = redirect("/")
   return response
+
+
 
 
 #Settings

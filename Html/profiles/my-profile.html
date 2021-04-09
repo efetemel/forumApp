@@ -31,7 +31,7 @@
                                                    <div class="profiles p-3 my-4 rounded text-center float-left ml-2">
                                                         <div class="avatars">
                                                             <a href="setting.html">
-                                                                <img src="{% static 'img/user/' %}{{user.username}}.png" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
+                                                                <img src="{% static '../media/profile/' %}{{user.username}}.jpg" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
                                                             </a>
                                                         </div>
                                                         <div class="names">
@@ -71,7 +71,7 @@
             {% for post in posts %}
             <div class="card mb-2 bg-dark text-white infinite-item">
               <div class="card-header d-flex align-items-center justify-content-start">
-                <img src="{% static 'img/user/' %}{{post.author}}.png" width="36px" class="rounded mt-2 my-1">
+                <img src="{% static '../media/profile/' %}{{post.author}}.jpg" width="36px" class="rounded mt-2 my-1">
                   <a href="../profile/{{ post.author }}" class="text-decoration-none text-white" style="margin-left: 2px"> @{{post.author}}</a>
                   <span style="margin-left: 10px" class="text-warning">Yeni bir paylaşım yaptı</span>
               </div>
