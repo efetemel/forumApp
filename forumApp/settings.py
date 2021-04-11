@@ -67,6 +67,7 @@ TEMPLATES = [
             'libraries':{
                 'ifmethods': 'forumSozluk.templatetags.ifmethods',
                 'smallStr': 'forumSozluk.templatetags.smallStr',
+                'contextStr': 'forumSozluk.templatetags.contextStr',
             },
         },
     },

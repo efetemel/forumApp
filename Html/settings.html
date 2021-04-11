@@ -58,30 +58,45 @@
       </div>
         <div class= "d-flex flex-column justify-content-center">
                 <div class= "bg-dark p-3 m-0 mb-2" id="general-settings">
-                   <div><a href="" class="text-white text-decoration-none"><i class="fas fa-user"></i> Kullanıcı Adı düzenle</a></div>
-                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-portrait"></i> Ad Soyad düzenle</a></div>
+                   <div><a href="#" class="text-white text-decoration-none nav-link" id="name-change" ><i class="fas fa-user"></i> Kullanıcı Adı düzenle</a></div>
+                    <div><a href="#" class="text-white text-decoration-none nav-link" id="fullname-change"><i class="fas fa-portrait"></i> Ad Soyad düzenle</a></div>
                 </div>
                 <div class= "bg-dark p-3 m-0 mb-2 d-none" id="security-settings">
-                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
-                    <div><a href="" class="text-white text-decoration-none"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
+                    <div><a href="#" class="text-white text-decoration-none"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
+                    <div><a href="#" class="text-white text-decoration-none"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
                 </div>
-
-            <div class= "bg-dark p-3 m-0 mb-2" id="name-change-container">
-                <form method="post">
+            <div class= "bg-dark p-3 m-0 mb-2 d-none " id="name-change-container">
                     <h6 class="text-warning">Mevcut Kullanıcı Adı</h6>
-                    <input class="form-control" type="text" placeholder="{{ user.username }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ user.username }}" aria-label="Disabled input example"  id="currentName" disabled readonly>
                     <br>
                     <h6 class="text-warning">Yeni Kullanıcı Adı</h6>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newUsername" placeholder="corona" required>
+                    <input type="text" class="form-control" name="newUsername" placeholder="corona" required  id="newUserName">
+                    <br>
+                    <h6 class="text-warning">Mevcut Şifre</h6>
+                    <input type="password" class="form-control" name="password" placeholder="Şifre" required  id="userCurrentPs">
+                    <br>
+                    <button type="submit" class="changeName btn btn-primary mb-3" id="changeName" token="{{ csrf_token}}">Kullanıcı Adını Güncelle</button>
+            </div>
+
+            <div class= "bg-dark p-3 m-0 mb-2 d-none " id="fullname-change-container">
+                <form method="post">
+                    <h6 class="text-warning">Mevcut Ad Soyad</h6>
+                    <input class="form-control" type="text" value="{{ user.fullname }}" aria-label="Disabled input example" disabled readonly>
+                    <br>
+                    <h6 class="text-warning">Yeni Ad</h6>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newFirstname" placeholder="corona" required>
+                    <br>
+                    <h6 class="text-warning">Yeni Soyad</h6>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newLastname" placeholder="virüs" required>
                     <br>
                     <h6 class="text-warning">Mevcut Şifre</h6>
                     <input type="password" class="form-control" id="exampleFormControlInput1" name="password" placeholder="Şifre" required>
                     <br>
-                    <button type="submit" class="btn btn-primary mb-3">Kullanıcı Adını Güncelle</button>
+                    <button type="submit" class="btn btn-primary mb-3">Ad Soyad Güncelle</button>
                 </form>
             </div>
 
-            <div class= "bg-dark p-3 m-0 mb-2" id="email-change-container">
+            <div class= "bg-dark p-3 m-0 mb-2 d-none" id="email-change-container">
                 <form method="post">
                     <h6 class="text-warning">Mevcut E-posta</h6>
                     <input class="form-control" type="email" placeholder="{{ user.email }}" aria-label="Disabled input example" disabled readonly>
@@ -96,7 +111,7 @@
                 </form>
             </div>
 
-            <div class= "bg-dark p-3 m-0 mb-2" id="password-change-container">
+            <div class= "bg-dark p-3 m-0 mb-2 d-none" id="password-change-container">
                 <form method="post">
                     <h6 class="text-warning">Mevcut Şifre</h6>
                     <input type="password" class="form-control" id="exampleFormControlInput1" name="currentPassword" placeholder="Mevcut Şifre" required>
@@ -115,13 +130,41 @@
   </div>
 </div>
 
+<div class="position-fixed bottom-0 end-0 p-3 d-none" style="z-index: 5;transition: .5s" id="showNotification">
+  <div id="liveToast" class="toast bg-dark" style="opacity: 1;" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-warning ml-2">
+      <i class="fas fa-bell fs-6"></i>
+      <strong class="me-auto text-dark fs-6"><span class="ms-2"> </span> forumSozluk</strong>
+      <small class="text-dark">Şimdi</small>
+      <i class="fas fa-times fs-5 ms-2 text-dark" id="closeBtn"></i>
+        <style>
+            #closeBtn:hover{
+                cursor:pointer;
+            }
+        </style>
+    </div>
+    <div class="toast-body text-white">
+        <span id="procText">Kullanıcı Adı</span> başarıyla değiştirildi!
+    </div>
+  </div>
+
+</div>
 
 {% include 'footer.html' %}
+    <script src="{%  static 'js/settings.js'%}"></script>
 <script>
     var generalBtn = document.getElementById("general-btn");
     var securityBtn = document.getElementById("settings-btn");
     var settingsText = document.getElementById("settings-text");
-
+    var nameChangeBtn = document.getElementById("name-change");
+    var nameChange = document.getElementById("name-change-container");
+    var fullnameChangeBtn = document.getElementById("fullname-change");
+    var fullChange = document.getElementById("fullname-change-container");
+    var emailChangeBtn = document.getElementById("email-change");
+    var emailChange = document.getElementById("email-change-container");
+    var passwordChangeBtn = document.getElementById("password-change");
+    var passwordChange = document.getElementById("password-change-container");
+    var btn = document.getElementById("closeBtn");
 	generalBtn.onclick=function(){
 	    settingsText.textContent = "Genel Ayarlar";
 
@@ -150,6 +193,36 @@
 		document.querySelector('#security-settings').classList.remove('d-none');
         document.querySelector('#security-settings').classList.add('d-block');
 	}
+	nameChangeBtn.onclick=function (){
+        document.querySelector('#name-change').classList.remove('text-white');
+        document.querySelector('#name-change').classList.add('text-warning');
+
+        document.querySelector('#name-change-container').classList.remove('d-none');
+        document.querySelector('#name-change-container').classList.add('d-block');
+
+        document.querySelector('#fullname-change-container').classList.remove('d-block');
+        document.querySelector('#fullname-change-container').classList.add('d-none');
+
+        document.querySelector('#fullname-change').classList.remove('text-warning');
+        document.querySelector('#fullname-change').classList.add('text-white');
+    }
+    fullnameChangeBtn.onclick=function (){
+        document.querySelector('#name-change').classList.remove('text-warning');
+        document.querySelector('#name-change').classList.add('text-white');
+
+        document.querySelector('#fullname-change-container').classList.remove('d-none');
+        document.querySelector('#fullname-change-container').classList.add('d-block');
+
+        document.querySelector('#name-change-container').classList.remove('d-block');
+        document.querySelector('#name-change-container').classList.add('d-none');
+
+        document.querySelector('#fullname-change').classList.remove('text-white');
+        document.querySelector('#fullname-change').classList.add('text-warning');
+    }
+     btn.onclick=function (){
+	     document.querySelector('#showNotification').classList.remove('d-block');
+         document.querySelector('#showNotification').classList.add('d-none');
+     }
 </script>
 </body>
 </html>

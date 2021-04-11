@@ -13,7 +13,9 @@ class User(models.Model):
     me_flow = models.CharField(max_length=255) #bizim takip ettiklerimiz
     flow = models.CharField(max_length=255) #bizi takip edenler
     
-
+class Meta:
+    model = User
+    fields = ("__all__")
 
 class Post(models.Model):
     postID = models.CharField(max_length=255)

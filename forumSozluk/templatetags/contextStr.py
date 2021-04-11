@@ -7,8 +7,8 @@ from django.http import HttpResponse
 register = template.Library()
 
 @register.filter
-def smallStr(post):
-    if len(post.content) >= 80:
-        return post.content[0:75]+"..."
+def contextStr(post):
+    if len(post.content) >= 200:
+        return post.content[0:200]+"..."
     else:
         return post.content

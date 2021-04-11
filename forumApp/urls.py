@@ -32,5 +32,6 @@ urlpatterns = [
     path('create-post',views.createPost),
     path('like',views.like),
     path('post/<postID>', views.details),
+    path('namechange', views.nameChange),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

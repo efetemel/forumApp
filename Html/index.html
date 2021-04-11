@@ -1,6 +1,7 @@
 {% load static %}
 {% load ifmethods %}
 {% load smallStr %}
+{% load contextStr %}
 
 <!DOCTYPE html>
 <html lang="tr">
@@ -60,7 +61,7 @@
 
               <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
                   <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
-                {{ trend.content }}
+                {{ trend | smallStr }}
               </p>
             </div>
             {% endfor %}
@@ -101,7 +102,7 @@
               </div>
               <div class="card-body">
                 <h5 class="card-title"><a href="../post/{{post.postID }}" class="text-white text-decoration-none">{{ post.postPreview }}</a></h5>
-                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text">{{ post | contextStr }}</p>
                 {% if is_login == "true" %}
                   {% if post.postID|ifmethods:user == "true" %}
                       <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes" style="transition: all 0.3s;"></span>

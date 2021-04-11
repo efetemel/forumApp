@@ -15,7 +15,7 @@ from .models import Like
 from .models import ForgotPassword
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.views.generic.list import ListView
-
+import os
 
 def index(request):
   userID = ""
@@ -212,7 +212,7 @@ def register(request):
         if password == rpassword:
           newUser = User(
             userID=len(count)+1,
-            username=username,
+            username=username.lower().strip(),
             photo=uploaded_file_url,
             fullname=first_name + ' ' + last_name,
             email=email,
@@ -560,5 +560,61 @@ def mysettings(request,username):
     else:
       response = redirect("/")
   except:
+    response = redirect("/")
+  return response
+
+from django.http import JsonResponse
+from django.core import serializers
+
+def nameChange(request):
+  try:
+    print("giriyor")
+    currentName = request.POST['currentName']
+    print("giriyor 2")
+
+    newName = request.POST['newName']
+    print("giriyor 3")
+
+    password = request.POST['password']
+
+    user = User.objects.get(username=currentName)
+    print("user bulundu")
+    if user.password == password:
+      print("şifreler eşleşti")
+      try:
+        user2 = User.objects.get(username=newName)
+        print("yeni username de kullanıcı bulundu")
+        response = redirect("/")
+      except:
+        oldname = user.username
+        user.username = newName
+        print("kullanıcı adı güncelleniyor")
+        user.save()
+        print("kullanıcı adı güncellendi")
+        os.rename('C:\\Users\\efetemel\\Desktop\\forumApp\media\\profile\\'+oldname+'.jpg', 'C:\\Users\\efetemel\\Desktop\\forumApp\media\\profile\\'+user.username+'.jpg')
+        try:
+          post = Post.objects.get(author=oldname)
+          post.author = user.username
+          post.save()
+        except:
+          pass
+        try:
+          like = Like.objects.get(likeAuthor=oldname)
+          like.likeAuthor = user.username
+          like.save()
+        except:
+          pass
+        try:
+          like = Like.objects.get(postAuthor=oldname)
+          like.postAuthor = user.username
+          like.save()
+        except:
+          pass
+        response = JsonResponse({'username': user.username})
+    else:
+      print("bura mı?")
+      response = redirect("/")
+  except:
+    print("user bulunamadı")
     response = redirect("/")
   return response

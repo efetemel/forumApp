@@ -1,4 +1,7 @@
 {% load static %}
+{% load ifmethods %}
+{% load smallStr %}
+{% load contextStr %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,17 +26,14 @@
     <h6 class="border-bottom pb-2 mb-0">Trendler</h6>
     {% for trend in trends %}
     <div class="d-flex text-muted pt-3">
-      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static 'img/user/' %}{{trend.author}}.png"><title>Placeholder</title></img>
+      <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static '../media/profile/' %}{{trend.author}}.jpg"><title>Placeholder</title></img>
 
       <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
-        <strong class="d-block text-white">@{{ trend.author }}</strong>
-        Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+          <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
+           {{ trend | contextStr }}
       </p>
     </div>
     {% endfor %}
-    <small class="d-block text-end mt-3">
-      <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
-    </small>
   </div>
         </div>
     <div class="row  align-items-start mt-5" style="width: 20%;margin-right:0px">
