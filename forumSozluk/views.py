@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render,redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -9,6 +10,7 @@ from datetime import datetime
 import pytz
 import locale
 from random import *
+from .models import Category
 from .models import User
 from .models import Post
 from .models import Like
@@ -17,11 +19,41 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.views.generic.list import ListView
 import os
 
+
+salt1 = "YhC2s95g8BC9tNC4NSd9yaqi*/|"
+salt2 = "|VvnCWbGrW9dcvbE09DfmDaADIf"
+
+
+def metinSifrele(metin):
+  sifreliMetin = salt1+metin+salt2
+  gonderilecekMetin = ""
+  for i in sifreliMetin:
+    gonderilecekMetin += chr(ord(i)+7)
+  return gonderilecekMetin
+
+
+def metinCoz(sifreliMetin):
+  gonderilecekMetin = ""
+  for i in sifreliMetin:
+    gonderilecekMetin += chr(ord(i)-7)
+  indexNo = gonderilecekMetin.find('|')
+  hash1 = gonderilecekMetin[indexNo]
+  yeniMetin = gonderilecekMetin[indexNo+1:len(gonderilecekMetin)]
+  indexNo2 = yeniMetin.find('|')
+  totalLen = len(yeniMetin[0:yeniMetin.find('|')])
+  hash2 = yeniMetin[indexNo2-totalLen:len(yeniMetin)]
+  lastMetin = hash2.find('|')
+  cozulmusMetin = hash2[indexNo2-totalLen:lastMetin]
+  return cozulmusMetin
+
+
+
 def index(request):
   userID = ""
-  post_list = Post.objects.order_by('-id')
+  post_list = Post.objects.order_by('-publish_date')
   paginator = Paginator(post_list, 10)
   page = request.GET.get('page', 1)
+  category = Category.objects.order_by('-categoryCount')
   try:
     if int(page) > int(paginator.num_pages):
       posts = ""
@@ -45,6 +77,7 @@ def index(request):
       'trends': [trends[0], trends[1], trends[2]],
       'user': user,
       'mylikes':allLikes,
+      'category':category
     }
     writeLog('Sayfa Görüntülenmesi', 'İndex')
     response = render(request, 'index.html', context)
@@ -53,6 +86,7 @@ def index(request):
       'is_login': 'false',
       'posts': posts,
       'trends': [trends[0], trends[1], trends[2]],
+      'category': category
     }
     writeLog('Sayfa Görüntülenmesi', 'İndex')
     response = render(request, 'index.html', context)
@@ -68,8 +102,10 @@ def login(request):
     try:
       email = request.POST['email']
       password = request.POST['password']
-      user = User.objects.get(email=email)
-      if password == user.password:
+      cEmail = metinSifrele(email)
+      cPassword = metinSifrele(password)
+      user = User.objects.get(email=cEmail)
+      if cPassword == user.password:
         request.session['userID'] = user.userID
         context = {
           'is_login': 'true',
@@ -158,11 +194,12 @@ def profile(request, username):
         }
         response = render(request, 'profiles/my-profile.html', context)
       else:  # profil başkasının
+        print("burda")
         is_login = 'true'
         context = {
           'is_login': is_login,
           'posts': posts,
-          'user': user,
+          'myuser': user,
         }
         response = render(request, 'profiles/profile.html', context)
     else:
@@ -170,7 +207,7 @@ def profile(request, username):
       context = {
         'is_login': is_login,
         'posts': posts,
-        'user': user,
+        'myuser': user,
       }
       response = render(request, 'profiles/profile.html', context)
   except:
@@ -210,20 +247,22 @@ def register(request):
         except:
           count = 0
         if password == rpassword:
+          characters = string.ascii_letters + string.digits
+          ID = "".join(choice(characters) for x in range(randint(3, 50)))
           newUser = User(
-            userID=len(count)+1,
+            userID=ID,
             username=username.lower().strip(),
             photo=uploaded_file_url,
             fullname=first_name + ' ' + last_name,
-            email=email,
+            email=metinSifrele(email),
             birtdate=date,
-            password=password,
+            password=metinSifrele(password),
             last_join='',
             about='me',
             me_flow='0',
             flow='0'
           )
-          request.session['userID'] = len(count)+1
+          request.session['userID'] = ID
           newUser.save()
           sendMailRegister(email, first_name)
           response = redirect("/")
@@ -434,10 +473,30 @@ def trends(request):
   trend = Post.objects.order_by('-like_count')
   try:
     userID = request.session['userID']
+    paginator = Paginator(trend, 5)
+    page = request.GET.get('sss', 1)
     user = User.objects.get(userID=userID)
+
+    try:
+      if int(page) > int(paginator.num_pages):
+        trends = ""
+        print("bura mı")
+      else:
+        try:
+          trends = paginator.page(page)
+          print("burda 1")
+        except PageNotAnInteger:
+          trends = paginator.page(1)
+          print("burda 2")
+        except EmptyPage:
+          trends = paginator.page(paginator.num_pages)
+          print("burda 3")
+    except:
+      return redirect("/")
+    print(trends)
     context = {
       'is_login': 'true',
-      'trends': trend,
+      'trends': trends,
       'user': user,
     }
     writeLog('Sayfa görüntülenmesi', 'Trend')
@@ -454,26 +513,58 @@ def trends(request):
 
 def createPost(request):
   trend = Post.objects.order_by('-like_count')
-  if 'content' in request.POST and 'title' in request.POST:
+  if 'content' in request.POST and 'title' in request.POST and 'category' in request.POST:
     try:
 
       content = request.POST['content']
       title = request.POST['title']
+      category = request.POST['category']
+      totalPost = Post.objects.all()
+      totalLenPost = len(totalPost)+1
       if content !="" and len(content) <= 500 and title !="":
         userID = request.session['userID']
         user = User.objects.get(userID=userID)
         now = datetime.now()
         tarih = now.strftime("%c")
         tarih = tarih[0:len(tarih)-3]
+        characters = string.ascii_letters + string.digits
+        ID = "".join(choice(characters) for x in range(randint(5, 20)))
+        try:
+          existPost = Post.objects.get(postID=ID)
+          ID = "".join(choice(characters) for x in range(randint(5, 25)))
+        except:
+          pass
         postCreated = Post.objects.create(
-          postID="0",
+          postID=ID,
           postPreview=title,
+          category=category,
           content=content,
           author=user.username,
           publish_date=tarih,
           like_count="0"
         )
         postCreated.save()
+        if category !="":
+          try:
+            try:
+              existCategory = Category.objects.get(categoryName=category)
+              tableTotalCategory = len(Category.objects.all())
+              totalCategory = int(existCategory.categoryCount) + 1
+              existCategory.categoryCount = totalCategory
+              existCategory.save()
+              print("vardı güncellendi!")
+            except:
+              tableTotalCategory = len(Category.objects.all())
+              totalCategory = tableTotalCategory + 1
+              categoryNew = Category.objects.create(
+                categoryID=totalCategory,
+                categoryName=category,
+                categoryCount="1"
+              )
+              categoryNew.save()
+              print("kategori oluşturuldu!")
+          except:
+            print("sıkıntılı")
         writeLog('Post Oluşturuldu!', 'Create Post')
       else:
         writeLog('Post Oluşturulamadı!', 'Create Post')
@@ -522,6 +613,7 @@ def like(request):
 def details(request,postID):
   userID = ""
   trends = Post.objects.order_by('-like_count')
+  category = Category.objects.order_by('-categoryCount')
   try:
     onePost = Post.objects.get(postID=postID)
     userID = request.session['userID']
@@ -533,28 +625,42 @@ def details(request,postID):
       'trends': [trends[0], trends[1], trends[2]],
       'user': user,
       'mylikes': allLikes,
+      'category':category,
     }
     writeLog('Sayfa Görüntülenmesi', 'details')
     response = render(request, 'details.html', context)
   except:
-    writeLog('Sayfa Görüntülenmesi', 'details to Index')
-    response = redirect("/")
+    try:
+      onePost = Post.objects.get(postID=postID)
+      context = {
+        'is_login': 'false',
+        'posts': [onePost],
+        'trends': [trends[0], trends[1], trends[2]],
+        'category': category,
+      }
+      writeLog('Sayfa Görüntülenmesi', 'details')
+      response = render(request, 'details.html', context)
+    except:
+      response = redirect("/")
   return response
 
 
 
 
 #Settings
-
 def mysettings(request,username):
   try:
     user = User.objects.get(username=username)
     userID = request.session['userID']
     if user.userID == userID:
+      mEmail = metinCoz(user.email)
+      mPassword = metinCoz(user.password)
       context = {
         'is_login': 'true',
         'user': user,
-        'set':'true'
+        'set':'true',
+        'mEmail':mEmail,
+        'mPassword':mPassword,
       }
       response = render(request, 'settings.html', context)
     else:
@@ -568,6 +674,7 @@ from django.core import serializers
 
 def nameChange(request):
   try:
+
     print("giriyor")
     currentName = request.POST['currentName']
     print("giriyor 2")
@@ -576,10 +683,10 @@ def nameChange(request):
     print("giriyor 3")
 
     password = request.POST['password']
-
+    sifreliPassword = metinSifrele(password)
     user = User.objects.get(username=currentName)
     print("user bulundu")
-    if user.password == password:
+    if user.password == sifreliPassword:
       print("şifreler eşleşti")
       try:
         user2 = User.objects.get(username=newName)
@@ -593,11 +700,27 @@ def nameChange(request):
         print("kullanıcı adı güncellendi")
         os.rename('C:\\Users\\efetemel\\Desktop\\forumApp\media\\profile\\'+oldname+'.jpg', 'C:\\Users\\efetemel\\Desktop\\forumApp\media\\profile\\'+user.username+'.jpg')
         try:
+          print("giriyor")
+          print(oldname)
           post = Post.objects.get(author=oldname)
+          print("buldu")
           post.author = user.username
+          print("eşitledi")
           post.save()
+          print("kaydetti")
         except:
-          pass
+          print("burraa")
+          try:
+            print(oldname)
+            posts = Post.objects.filter(author=oldname)
+            print("girdi")
+            for post in posts:
+              print(post.author+" old")
+              post.author = user.username
+              print(post.author +" new")
+              post.save()
+          except:
+            pass
         try:
           like = Like.objects.get(likeAuthor=oldname)
           like.likeAuthor = user.username
@@ -610,11 +733,149 @@ def nameChange(request):
           like.save()
         except:
           pass
-        response = JsonResponse({'username': user.username})
+        response = JsonResponse({'username': user.username},status=200)
     else:
       print("bura mı?")
-      response = redirect("/")
+      response = JsonResponse({'username': ""}, status=400)
   except:
     print("user bulunamadı")
-    response = redirect("/")
+    response = JsonResponse({'username': ""},status=400)
   return response
+
+def fullnamechange(request):
+  currentFullName = request.POST['currentFullName']
+  newFirstName = request.POST['newFirstName']
+  newLastName = request.POST['newLastName']
+  password = request.POST['fullPassword']
+  sifreliPassword = metinSifrele(password)
+  print("bilgiler alındı giriyor")
+  try:
+    user = User.objects.get(fullname=currentFullName)
+    print("user çekildi")
+    if user.password == sifreliPassword:
+      print("pass doğrulandı")
+      fullName = newFirstName +" "+newLastName
+      print("name ler birleştiridi")
+      user.fullname = fullName.title()
+      print("eşitlendi")
+      user.save()
+      print("savelendi")
+      response = JsonResponse({'fullname': user.fullname},status=200)
+    else:
+      response = JsonResponse({'fullname': ""},status=400)
+  except:
+    response = JsonResponse({'fullname': ""},status=400)
+  return response
+
+
+def emailchange(request):
+  currentEmail = request.POST['currentEmail']
+  newEmail = request.POST['newEmail']
+  password = request.POST['emailPassword']
+  sifreliCurrentEmail = metinSifrele(currentEmail)
+  sifreliNewEmail = metinSifrele(newEmail)
+  sifreliPassword = metinSifrele(password)
+  print("bilgiler alındı giriyor")
+  print(currentEmail)
+  try:
+    user = User.objects.get(email=sifreliCurrentEmail)
+    print("user çekildi")
+    if user.password == sifreliPassword:
+      try:
+        print("yeni epostada user varmı bakılıyor")
+        user2 = User.objects.get(email=sifreliNewEmail)
+        print("bulundu!")
+      except:
+        user.email = newEmail
+        user.save()
+        print("bilgiler kaydedildi")
+      response = JsonResponse({'email':sifreliNewEmail},status=200)
+    else:
+      response = JsonResponse({'email': ""},status=400)
+  except:
+    response = JsonResponse({'email': ""},status=400)
+  return response
+
+
+def passwordchange(request):
+  currentEmailPassword = request.POST['currentEmailPassword']
+  currentPassword = request.POST['currentPassword']
+  newPassword = request.POST['newPassword']
+  sifreliEmail = metinSifrele(currentEmailPassword)
+  sifreliCurrentPassword = metinSifrele(currentPassword)
+  sifreliNewPassword = metinSifrele(newPassword)
+  print("bilgiler alındı giriyor")
+  try:
+    user = User.objects.get(email=sifreliEmail)
+    print("user çekildi")
+    if user.password == sifreliCurrentPassword:
+      user.password = sifreliNewPassword
+      user.save()
+      print("bilgiler kaydedildi")
+      response = JsonResponse({'password':sifreliNewPassword}, status=200)
+    else:
+      response = JsonResponse({'email': ""},status=400)
+  except:
+    response = JsonResponse({'email': ""},status=400)
+  return response
+
+
+def categories(request):
+
+  try:
+    userID = request.session['userID']
+    user = User.objects.get(userID=userID)
+    category = Category.objects.order_by('-categoryCount')
+    context = {
+      'is_login': 'true',
+      'user': user,
+      'category': category
+    }
+    response = render(request, "categories.html",context)
+  except:
+    context = {
+      'is_login': 'false',
+      'category': category
+    }
+    response = render(request, "categories.html", context)
+  return response
+
+def selectcategory(request,category):
+  try:
+    print("1")
+    existCategory = Category.objects.get(categoryName=category)
+    print("2")
+    print(existCategory.categoryName)
+    existPost = Post.objects.filter(category=existCategory.categoryName)
+    print("3")
+    trends = Post.objects.order_by('-like_count')
+    try:
+      userID = request.session['userID']
+      user = User.objects.get(userID=userID)
+      context = {
+        'posts': existPost,
+        'is_login': 'true',
+        'categoryName':category,
+        'trends': [trends[0], trends[1], trends[2]],
+      }
+    except:
+      context = {
+        'posts':existPost,
+        'is_login': 'false',
+        'categoryName': category,
+        'trends': [trends[0], trends[1], trends[2]],
+      }
+    return render(request,"selectcategory.html",context)
+  except:
+    return redirect("/")
+
+def search(request):
+  if 'term' in request.GET:
+    searchText = request.GET.get('term')
+    searchPost = User.objects.filter(username__icontains=searchText)
+    titles = list()
+    for post in searchPost:
+      titles.append(post.username)
+    return JsonResponse(titles,safe=False)
+  else:
+    return redirect("/")

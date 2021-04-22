@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
     <title>forumSözluk</title>
     <style>
         .begen:hover{
@@ -23,9 +24,10 @@
     {% endif %}
     <link rel="stylesheet" href="{% static 'css/widthme.css' %}">
 
+
     <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark  text-warning sidebar collapse">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark  text-warning sidebar collapse" style="height: 845px">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
@@ -35,12 +37,12 @@
           </li>
             <li class="nav-item">
             <a class="nav-link active text-white" id="settings-btn" aria-current="page" href="#">
-              <i class="fas fa-lock"></i> Güvenlik ve Gizlilik
+              <i class="fas fa-lock"></i> Güvenlik & Gizlilik
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link text-white" href="#">
-              <i class="far fa-id-card"></i> İletişim
+            <a class="nav-link text-white" id="contact-btn" href="#">
+              <i class="far fa-id-card"></i> İletişim & Hakkımızda
             </a>
           </li>
           <li class="nav-item">
@@ -62,8 +64,8 @@
                     <div><a href="#" class="text-white text-decoration-none nav-link" id="fullname-change"><i class="fas fa-portrait"></i> Ad Soyad düzenle</a></div>
                 </div>
                 <div class= "bg-dark p-3 m-0 mb-2 d-none" id="security-settings">
-                    <div><a href="#" class="text-white text-decoration-none"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
-                    <div><a href="#" class="text-white text-decoration-none"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
+                    <div><a href="#" class="text-white text-decoration-none nav-link" id="email-change"><i class="fas fa-envelope"></i> E-Posta düzenle</a></div>
+                    <div><a href="#" class="text-white text-decoration-none nav-link" id="password-change"><i class="fas fa-lock"></i> Şifre düzenle</a></div>
                 </div>
             <div class= "bg-dark p-3 m-0 mb-2 d-none " id="name-change-container">
                     <h6 class="text-warning">Mevcut Kullanıcı Adı</h6>
@@ -73,57 +75,65 @@
                     <input type="text" class="form-control" name="newUsername" placeholder="corona" required  id="newUserName">
                     <br>
                     <h6 class="text-warning">Mevcut Şifre</h6>
-                    <input type="password" class="form-control" name="password" placeholder="Şifre" required  id="userCurrentPs">
+                    <input type="password" class="form-control" name="userCurrentPs" placeholder="Şifre" required  id="userCurrentPs">
                     <br>
                     <button type="submit" class="changeName btn btn-primary mb-3" id="changeName" token="{{ csrf_token}}">Kullanıcı Adını Güncelle</button>
             </div>
 
             <div class= "bg-dark p-3 m-0 mb-2 d-none " id="fullname-change-container">
-                <form method="post">
                     <h6 class="text-warning">Mevcut Ad Soyad</h6>
-                    <input class="form-control" type="text" value="{{ user.fullname }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ user.fullname }}" aria-label="Disabled input example" id="currentFullName" disabled readonly>
                     <br>
                     <h6 class="text-warning">Yeni Ad</h6>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newFirstname" placeholder="corona" required>
+                    <input type="text" class="form-control"  name="newFirstname"  id="newFirstname"placeholder="corona" required>
                     <br>
                     <h6 class="text-warning">Yeni Soyad</h6>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="newLastname" placeholder="virüs" required>
+                    <input type="text" class="form-control " name="newLastname" id="newLastname" placeholder="virüs" required>
                     <br>
                     <h6 class="text-warning">Mevcut Şifre</h6>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password" placeholder="Şifre" required>
+                    <input type="password" class="form-control fullPassword" id="fullPassword" name="fullPassword"  placeholder="Şifre" required>
                     <br>
-                    <button type="submit" class="btn btn-primary mb-3">Ad Soyad Güncelle</button>
-                </form>
+                    <button type="submit" class="changeFullName btn btn-primary mb-3" id="changeFullName" token="{{ csrf_token}}">Ad Soyad Güncelle</button>
             </div>
 
             <div class= "bg-dark p-3 m-0 mb-2 d-none" id="email-change-container">
-                <form method="post">
                     <h6 class="text-warning">Mevcut E-posta</h6>
-                    <input class="form-control" type="email" placeholder="{{ user.email }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="email" value="{{ mEmail }}" aria-label="Disabled input example" id="currentEmails" name="currentEmails" disabled readonly>
                     <br>
                     <h6 class="text-warning">Yeni E-Posta</h6>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" name="newEmail" placeholder="corona@gmail.com" required>
+                    <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="corona@gmail.com" required>
                     <br>
                     <h6 class="text-warning">Mevcut Şifre</h6>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password" placeholder="Şifre" required>
+                    <input type="password" class="form-control" id="emailPassword" name="emailPassword" placeholder="Şifre" required>
                     <br>
-                    <button type="submit" class="btn btn-primary mb-3">E-posta Güncelle</button>
-                </form>
+                    <button type="submit" class="changeEmail btn btn-primary mb-3" id="changeEmail" token="{{ csrf_token}}">E-posta Güncelle</button>
             </div>
 
             <div class= "bg-dark p-3 m-0 mb-2 d-none" id="password-change-container">
-                <form method="post">
                     <h6 class="text-warning">Mevcut Şifre</h6>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" name="currentPassword" placeholder="Mevcut Şifre" required>
+                    <input class="form-control hidden" type="email" value="{{ mEmail }}" aria-label="Disabled input example" id="currentEmailPassword" name="currentEmailPassword" hidden readonly>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Mevcut Şifre" required>
                     <br>
                     <h6 class="text-warning">Yeni Şifre</h6>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" name="newPassword" placeholder="Yeni Şifre" required>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Yeni Şifre" required>
                     <br>
                     <h6 class="text-warning">Yeni Şifre Tekrar</h6>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" name="newPasswordR" placeholder="Yeni Şifre Tekrar" required>
+                    <input type="password" class="form-control" id="newPasswordR" name="newPasswordR" placeholder="Yeni Şifre Tekrar" required>
                     <br>
-                    <button type="submit" class="btn btn-primary mb-3">Şifre Güncelle</button>
-                </form>
+                    <button type="submit" class="changePassword btn btn-primary mb-3" token="{{ csrf_token}}" id="changePassword">Şifre Güncelle</button>
+            </div>
+            <div class= "bg-dark p-3 m-0 mb-2 d-none" id="contact-container">
+                <h6 class="text-white">forum<span class="text-warning">Sözlük</span></h6>
+                <p class="text-white"><strong>Hakkımızda</strong></p>
+                <p class="text-white">forumSözlük 2021 yılında kurulmuştur.<br>Güncel, doğru ve nezih bir ortam oluşturmak amacıyla kurmuş oluğumuz platformdur.
+                <br>İnsanların konu açarak, paylaşım yapabilecekleri bir ortam oluşturduk.</p>
+                <p class="text-white"><strong>Kurallar</strong></p>
+                <p class="text-white">Reklam yapmak,<br>Kullanıcılar arasında tartışmak ya da küfürlü yazışmalar yapmak,<br>Kullanıcıları rahatsız etmek,
+                <br>Cinsel, Irkçı, Reklam ve Siyasi içerikli avatar kullanmak,
+                <br>Kullanıcı isimlerinde; Siyasi, Cinsel, Irkçı, Küfür ve Argo içerikli nickler kullanmak,
+                <br>Kesinlikle yasaktır!
+                 <br>İlk uyarınızda eposta adresinize uyarı gider.
+                    <br>2. uyarınızda hesabınız 24 saatlik engellenir.
             </div>
 
     </main>
@@ -144,7 +154,7 @@
         </style>
     </div>
     <div class="toast-body text-white">
-        <span id="procText">Kullanıcı Adı</span> başarıyla değiştirildi!
+        <span id="procText">Kullanıcı Adı</span> <span id="statusEvent">başarıyla değiştirildi!</span>
     </div>
   </div>
 
@@ -156,18 +166,26 @@
     var generalBtn = document.getElementById("general-btn");
     var securityBtn = document.getElementById("settings-btn");
     var settingsText = document.getElementById("settings-text");
-    var nameChangeBtn = document.getElementById("name-change");
-    var nameChange = document.getElementById("name-change-container");
-    var fullnameChangeBtn = document.getElementById("fullname-change");
-    var fullChange = document.getElementById("fullname-change-container");
+
     var emailChangeBtn = document.getElementById("email-change");
     var emailChange = document.getElementById("email-change-container");
+
+    var nameChangeBtn = document.getElementById("name-change");
+    var nameChange = document.getElementById("name-change-container");
+
+    var fullnameChangeBtn = document.getElementById("fullname-change");
+    var fullChange = document.getElementById("fullname-change-container");
+
     var passwordChangeBtn = document.getElementById("password-change");
     var passwordChange = document.getElementById("password-change-container");
+
     var btn = document.getElementById("closeBtn");
+    var contactBtn = document.getElementById("contact-btn");
+
 	generalBtn.onclick=function(){
 	    settingsText.textContent = "Genel Ayarlar";
-
+        document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
         document.querySelector('#general-btn').classList.remove('text-white');
 		document.querySelector('#general-btn').classList.add('text-warning');
 
@@ -178,10 +196,34 @@
 		document.querySelector('#general-settings').classList.add('d-block');
 		document.querySelector('#security-settings').classList.remove('d-block');
         document.querySelector('#security-settings').classList.add('d-none');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
+
+        document.querySelector('#fullname-change-container').classList.remove('d-block');
+        document.querySelector('#fullname-change-container').classList.add('d-none');
+        document.querySelector('#password-change-container').classList.remove('d-block');
+        document.querySelector('#password-change-container').classList.add('d-none');
+        document.querySelector('#name-change-container').classList.remove('d-block');
+        document.querySelector('#name-change-container').classList.add('d-none');
+        document.querySelector('#email-change-container').classList.remove('d-block');
+        document.querySelector('#email-change-container').classList.add('d-none');
+
+        document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
+        document.querySelector('#name-change').classList.remove('text-warning');
+        document.querySelector('#name-change').classList.add('text-white');
+        document.querySelector('#fullname-change').classList.remove('text-warning');
+        document.querySelector('#fullname-change').classList.add('text-white');
+        document.querySelector('#password-change').classList.remove('text-warning');
+        document.querySelector('#password-change').classList.add('text-white');
+        document.querySelector('#email-change').classList.remove('text-warning');
+        document.querySelector('#email-change').classList.add('text-white');
+
 	}
 	securityBtn.onclick=function(){
-        settingsText.textContent = "Güvenlik ve Gizlilik";
-
+        settingsText.textContent = "Güvenlik & Gizlilik";
+        document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
         document.querySelector('#settings-btn').classList.remove('text-white');
 		document.querySelector('#settings-btn').classList.add('text-warning');
 
@@ -192,8 +234,33 @@
 		document.querySelector('#general-settings').classList.add('d-none');
 		document.querySelector('#security-settings').classList.remove('d-none');
         document.querySelector('#security-settings').classList.add('d-block');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
+
+         document.querySelector('#fullname-change-container').classList.remove('d-block');
+        document.querySelector('#fullname-change-container').classList.add('d-none');
+        document.querySelector('#password-change-container').classList.remove('d-block');
+        document.querySelector('#password-change-container').classList.add('d-none');
+        document.querySelector('#name-change-container').classList.remove('d-block');
+        document.querySelector('#name-change-container').classList.add('d-none');
+        document.querySelector('#email-change-container').classList.remove('d-block');
+        document.querySelector('#email-change-container').classList.add('d-none');
+
+        document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
+        document.querySelector('#name-change').classList.remove('text-warning');
+        document.querySelector('#name-change').classList.add('text-white');
+         document.querySelector('#fullname-change').classList.remove('text-warning');
+        document.querySelector('#fullname-change').classList.add('text-white');
+         document.querySelector('#password-change').classList.remove('text-warning');
+        document.querySelector('#password-change').classList.add('text-white');
+        document.querySelector('#email-change').classList.remove('text-warning');
+        document.querySelector('#email-change').classList.add('text-white');
+
 	}
 	nameChangeBtn.onclick=function (){
+	     document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
         document.querySelector('#name-change').classList.remove('text-white');
         document.querySelector('#name-change').classList.add('text-warning');
 
@@ -202,11 +269,19 @@
 
         document.querySelector('#fullname-change-container').classList.remove('d-block');
         document.querySelector('#fullname-change-container').classList.add('d-none');
+        document.querySelector('#password-change-container').classList.remove('d-block');
+        document.querySelector('#password-change-container').classList.add('d-none');
+        document.querySelector('#email-change-container').classList.remove('d-block');
+        document.querySelector('#email-change-container').classList.add('d-none');
 
         document.querySelector('#fullname-change').classList.remove('text-warning');
         document.querySelector('#fullname-change').classList.add('text-white');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
     }
     fullnameChangeBtn.onclick=function (){
+	     document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
         document.querySelector('#name-change').classList.remove('text-warning');
         document.querySelector('#name-change').classList.add('text-white');
 
@@ -215,13 +290,83 @@
 
         document.querySelector('#name-change-container').classList.remove('d-block');
         document.querySelector('#name-change-container').classList.add('d-none');
+        document.querySelector('#password-change-container').classList.remove('d-block');
+        document.querySelector('#password-change-container').classList.add('d-none');
+        document.querySelector('#email-change-container').classList.remove('d-block');
+        document.querySelector('#email-change-container').classList.add('d-none');
 
         document.querySelector('#fullname-change').classList.remove('text-white');
         document.querySelector('#fullname-change').classList.add('text-warning');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
+    }
+    emailChangeBtn.onclick=function (){
+	     document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
+        document.querySelector('#password-change').classList.remove('text-warning');
+        document.querySelector('#password-change').classList.add('text-white');
+
+        document.querySelector('#email-change-container').classList.remove('d-none');
+        document.querySelector('#email-change-container').classList.add('d-block');
+
+        document.querySelector('#fullname-change-container').classList.remove('d-block');
+        document.querySelector('#fullname-change-container').classList.add('d-none');
+        document.querySelector('#name-change-container').classList.remove('d-block');
+        document.querySelector('#name-change-container').classList.add('d-none');
+        document.querySelector('#password-change-container').classList.remove('d-block');
+        document.querySelector('#password-change-container').classList.add('d-none');
+
+        document.querySelector('#email-change').classList.remove('text-white');
+        document.querySelector('#email-change').classList.add('text-warning');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
+    }
+    passwordChangeBtn.onclick=function (){
+	    document.querySelector('#contact-btn').classList.remove('text-warning');
+        document.querySelector('#contact-btn').classList.add('text-white');
+        document.querySelector('#email-change').classList.remove('text-warning');
+        document.querySelector('#email-change').classList.add('text-white');
+
+        document.querySelector('#password-change-container').classList.remove('d-none');
+        document.querySelector('#password-change-container').classList.add('d-block');
+
+        document.querySelector('#fullname-change-container').classList.remove('d-block');
+        document.querySelector('#fullname-change-container').classList.add('d-none');
+        document.querySelector('#name-change-container').classList.remove('d-block');
+        document.querySelector('#name-change-container').classList.add('d-none');
+        document.querySelector('#email-change-container').classList.remove('d-block');
+        document.querySelector('#email-change-container').classList.add('d-none');
+
+
+        document.querySelector('#password-change').classList.remove('text-white');
+        document.querySelector('#password-change').classList.add('text-warning');
+        document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
     }
      btn.onclick=function (){
 	     document.querySelector('#showNotification').classList.remove('d-block');
          document.querySelector('#showNotification').classList.add('d-none');
+         document.querySelector('#contact-container').classList.remove('d-block');
+        document.querySelector('#contact-container').classList.add('d-none');
+     }
+     contactBtn.onclick=function () {
+	    settingsText.textContent = "İletişim & Hakkımızda";
+	    document.querySelector('#contact-btn').classList.remove('text-white');
+        document.querySelector('#contact-btn').classList.add('text-warning');
+
+        document.querySelector('#general-btn').classList.remove('text-warning');
+        document.querySelector('#general-btn').classList.add('text-white');
+
+        document.querySelector('#settings-btn').classList.remove('text-warning');
+        document.querySelector('#settings-btn').classList.add('text-white');
+
+        document.querySelector('#contact-container').classList.remove('d-none');
+        document.querySelector('#contact-container').classList.add('d-block');
+
+        document.querySelector('#general-settings').classList.remove('d-block');
+		document.querySelector('#general-settings').classList.add('d-none');
+		document.querySelector('#security-settings').classList.remove('d-block');
+        document.querySelector('#security-settings').classList.add('d-none');
      }
 </script>
 </body>

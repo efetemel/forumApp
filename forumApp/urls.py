@@ -33,5 +33,11 @@ urlpatterns = [
     path('like',views.like),
     path('post/<postID>', views.details),
     path('namechange', views.nameChange),
+    path('fullnamechange', views.fullnamechange),
+    path('emailchange', views.emailchange),
+    path('passwordchange', views.passwordchange),
+    path('categories', views.categories),
+    path('categories/<category>', views.selectcategory),
+    path('search', views.search,name="search"),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

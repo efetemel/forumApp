@@ -7,9 +7,11 @@
     <title>forumSözlük</title>
 </head>
 {% include 'headers/guest-header.html'%}
+<link rel="stylesheet" href="{% static 'css/widthme.css' %}">
+
 <body class="bg-dark">
     <main class="container-fluid  d-flex justify-content-center">
-        <form action="login" method="post" class="p-4 w-50 needs-validation">
+        <form action="login" method="post" class="p-4 w-lg-50 w-md-75 w-sm-100 w-ssm-100 needs-validation">
             {% csrf_token %}
             <h4 class="text-warning text-center pt-3">Giriş yap</h4>
             <div class="mb-3">

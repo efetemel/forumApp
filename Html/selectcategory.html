@@ -1,7 +1,8 @@
 {% load static %}
 {% load ifmethods %}
-{% load contextStr %}
 {% load smallStr %}
+{% load contextStr %}
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -35,9 +36,9 @@
     <div class="d-flex text-muted pt-3">
       <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static '../media/profile/' %}{{trend.author}}.jpg"><title>Placeholder</title></img>
 
-      <p class="pb-3 mb-0 small lh-sm  text-white">
+      <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
           <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
-        {{ trend |smallStr }}
+        {{ trend | smallStr }}
       </p>
     </div>
     {% endfor %}
@@ -58,20 +59,41 @@
             <div class="d-flex text-muted pt-3">
               <img class="bd-placeholder-img flex-shrink-0 me-2 rounded" height="32" src="{% static '../media/profile/' %}{{trend.author}}.jpg"><title>Placeholder</title></img>
 
-              <p class="pb-3 mb-0 small lh-sm text-white">
+              <p class="pb-3 mb-0 small lh-sm border-bottom text-white">
                   <strong class="d-block text-white"><a href="../profile/{{ trend.author }}" class="text-white text-decoration-none">@{{ trend.author }}</a></strong>
-                  {{ trend |smallStr }}
+                {{ trend | smallStr }}
               </p>
             </div>
             {% endfor %}
             <small class="d-block text-end mt-3">
-              <a href="../trends" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
+              <a href="#" class="text-white text-decoration-none">Tüm trendleri görüntüle</a>
             </small>
          </div>
         <!--SOL FOR MOBİLE !-->
 
-
+        {% if user.username != "" %}
+            <!--GÖNDERİ OLUŞTUR !-->
+            <div class="card mb-3 bg-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+              <div class="card-header" style="font-size:20px;font-weight: bold;color: white">Gönderi Oluştur
+              </div>
+              <div class="card-body">
+                  <div class="blockquote mb-1">
+                    <form  action="create-post" method="post">
+                         <fieldset disabled>
+                        {% csrf_token %}
+                          <div class="form-group">
+                              <input type="text" class="form-control bg-dark text-white border-1" id="exampleFormControlInput1" placeholder="Hayat nasıl gidiyor, {{ user.username }}!">
+                          </div>
+                          <button type="button" class="btn mt-2" style="background-color: #505151;color: white">Paylaş</button>
+                        </form>
+                      </fieldset>
+                    </div>
+                </div>
+              </div>
+            <!--GÖNDERİ OLUŞTUR !-->
+        {% endif %}
         <div class="infinite-container p-0 m-0">
+        <h3 class="text-warning">Etiket : {{ categoryName }}</h3><br>
             {% for post in posts %}
             <div class="card mb-2 bg-dark text-white infinite-item">
               <div class="card-header d-flex align-items-center justify-content-start">
@@ -81,7 +103,7 @@
               </div>
               <div class="card-body">
                 <h5 class="card-title"><a href="../post/{{post.postID }}" class="text-white text-decoration-none">{{ post.postPreview }}</a></h5>
-                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text">{{ post | contextStr }}</p>
                 {% if is_login == "true" %}
                   {% if post.postID|ifmethods:user == "true" %}
                       <span class="likeBtn fas fa-thumbs-up fs-4" id="{{ post.postID }}" data-token="{{ csrf_token}}" like="yes" style="transition: all 0.3s;"></span>
@@ -93,7 +115,7 @@
               {% endif %}
                   <span class="likeCount" id="{{ post.postID }}-{{ post.postID }}"><strong id="{{ post.postID }}-{{ post.postID }}-{{ post.postID }}" class="begen">{{ post.like_count }}</strong> Beğeni</span>
               </div>
-                <small class="mb-2" style="margin-left: 15px;margin-bottom: 15px">{{ post.publish_date }}</small>
+            <small class="mb-2" style="margin-left: 15px;margin-bottom: 15px">{{ post.publish_date }}</small>
             </div>
             {% endfor %}
 {% if posts.has_next %}
@@ -108,19 +130,8 @@
 
         <!--ORTA!-->
         <!--SAĞ!-->
-        <div class="row m-0  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%">
-<div class="p-3 bg-dark text-warning rounded shadow-sm" >
-    <h6 class="border-bottom pb-2 mb-0">Etiketler</h6>
-    {% for cat in category %}
-    <div class="d-flex text-muted pt-3">
-      <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#505151"></rect><text x="38%" y="50%" fill="#ffc107" dy=".3em" font-weight="bold">{{ cat.categoryCount }}</text></svg>
-          <strong class="d-block text-white"><a href="categories/{{ cat.categoryName }}" class="text-white text-decoration-none">#{{cat.categoryName  }}</a></strong>
-    </div>
-    {% endfor %}
-    <small class="d-block text-end mt-3">
-      <a href="../categories" class="text-white text-decoration-none">Tüm etiketleri görüntüle</a>
-    </small>
-  </div>
+        <div class="row  align-items-start d-none d-xl-block d-md-none mt-5" style="width: 20%;margin-right:0px">
+            <img src="https://cdn.discordapp.com/attachments/759029621018198076/829420033670643732/foto3_copy_200x400.png" class="p3">
         </div>
         <!--SAĞ!-->
     </main>
@@ -139,6 +150,10 @@
           <div class="mb-3">
             <label for="title" class="col-form-label text-white">Gönderi başlığı</label>
             <input type="text" class="form-control bg-dark text-white"  id="title" name="title" placeholder="Corona,Pandemi..." required>
+          </div>
+          <div class="mb-3">
+            <label for="title" class="col-form-label text-white">Gönderi Etiketi</label>
+            <input type="text" class="form-control bg-dark text-white"  id="category" name="category" placeholder="Dolar,Mutant virüs (İsteğe bağlı)">
           </div>
           <div class="mb-3">
             <label for="content" class="col-form-label text-white">İçerik</label>

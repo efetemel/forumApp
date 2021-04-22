@@ -31,19 +31,19 @@
                                                    <div class="profiles p-3 my-4 rounded text-center float-left ml-2">
                                                         <div class="avatars">
                                                             <a href="setting.html">
-                                                                <img src="{% static '../media/profile/' %}{{user.username}}.jpg" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
+                                                                <img src="{% static '../media/profile/' %}{{myuser.username}}.jpg" width="192px" alt="Profile Image" style="border: 5px solid white;" class="avatar-lg rounded-circle img-fluid shadow  mb-3">
                                                             </a>
                                                         </div>
                                                         <div class="names">
-                                                            <h3 class="title text-light">@{{user.username}}</h3>
-                                                            <h3 class="title text-light font-weight-bold">{{user.fullname}}</h3>
+                                                            <h3 class="title text-light">@{{myuser.username}}</h3>
+                                                            <h3 class="title text-light font-weight-bold">{{myuser.fullname}}</h3>
                                                             <a href="#" class="btn btn-link btn-facebook"><i class="fab fa-facebook"></i></a>
                                                             <a href="#" class="btn btn-link btn-twitter"><i class="fab fa-twitter"></i></a>
                                                             <a href="#" class="btn btn-link btn-gplus"><i class="fab fa-google-plus"></i></a>
                                                             <a href="#" class="btn btn-link btn-instagram"><i class="fab fa-instagram"></i></a>
                                                             <a href="#" class="btn btn-link btn-youtube"><i class="fab fa-youtube"></i></a><br>
-                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.flow}}</strong> Takip</a>
-                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{user.me_flow}}</strong> Takipçi</a>
+                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{myuser.flow}}</strong> Takip</a>
+                                                            <a href="#" class="btn btn-link" style="text-decoration: none;color: white;"><strong style="color: whitesmoke;">{{myuser.me_flow}}</strong> Takipçi</a>
                                                             <br>
                                                             <button type="button" class="btn btn-primary">yapılacak</button>
                                                         </div>

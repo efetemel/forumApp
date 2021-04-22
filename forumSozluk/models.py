@@ -20,6 +20,7 @@ class Meta:
 class Post(models.Model):
     postID = models.CharField(max_length=255)
     postPreview = models.CharField(max_length=500)
+    category = models.CharField(max_length=255)
     content = models.CharField(max_length=500)
     author = models.CharField(max_length=255)
     publish_date = models.CharField(max_length=255)
@@ -38,3 +39,8 @@ class Like(models.Model):
     postAuthor = models.CharField(max_length=255)
     likeAuthor = models.CharField(max_length=255)
     likeDate = models.CharField(max_length=255)
+
+class Category(models.Model):
+    categoryID = models.CharField(max_length=255)
+    categoryName = models.CharField(max_length=255)
+    categoryCount = models.CharField(max_length=255)

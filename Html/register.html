@@ -7,16 +7,16 @@
     <title>forumSözlük</title>
 </head>
 {% include 'headers/guest-header.html'%}
+<link rel="stylesheet" href="{% static 'css/widthme.css' %}">
 <body class="bg-dark">
     <main class="container-fluid  d-flex justify-content-center">
-        <form action="register" method="post" enctype="multipart/form-data" class="p-4 w-75 needs-validation">
+        <form action="register" method="post" enctype="multipart/form-data" class="p-5 w-lg-50 w-md-75 w-sm-100 w-ssm-100 needs-validation">
             {% csrf_token %}
             <h4 class="text-warning text-center pt-3">Hesap Oluştur</h4>
             <div class="d-flex justify-content-center mt-5">
             <img src="{% static '../media/default.jpg' %}" id="showImage" width="92px" height="92px" style="border-radius: 50%">
-
             </div>
-            <label for="formFile" class="text-center text-warning mt-1">Profil Fotoğrafı Seçiniz</label>
+            <label for="formFile" class="text-center text-warning mt-1">Profil Fotoğrafı Seçiniz (Zorunlu)</label>
             <div class="mb-3">
                 <input class="form-control" name="image" type="file" id="formFile" value="Profil fotoğrafı seçiniz">
             </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="mb-3">
                 <label for="example-date-input" class="col-2 col-form-label text-warning">Doğum Tarihi</label>
-                <input class="form-control" type="date" value="09-04-2021" name="date" id="date">
+                <input class="form-control" type="date" value="2021-04-20" name="date" id="date">
             </div>
              <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label text-warning">Şifre</label>
